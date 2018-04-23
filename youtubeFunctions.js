@@ -35,3 +35,14 @@ function onPlayerStateChange(event) {
 function stopVideo() {
     player.stopVideo();
 }
+
+//detect visibility of the tab, which listens to current tab's visibility change and allow interaction with it.
+document.addEventListener("visibilitychange", function (event) {
+    console.log(document.visibilityState);
+    if (document.visibilityState === "hidden") {
+
+    }
+    if (document.visibilityState === "visible") {
+
+    }
+});
