@@ -46,3 +46,10 @@ document.addEventListener("visibilitychange", function (event) {
 
     }
 });
+//Messaging function between html and content script.
+window.addEventListener("message", function (event) {
+    //This detect the message source is from windows, which is likely to be it is from the content script.
+    if (event.source === window){
+
+    }
+});
