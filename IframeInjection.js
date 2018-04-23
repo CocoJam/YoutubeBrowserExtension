@@ -4,6 +4,11 @@
 var script = document.createElement('script');
 //The content to inject into the given html
 var insertion = "(" + function () {
+//Dynamically inject div within the html which would be used to contain the Iframe of the youtube API.
+    var div_container = document.createElement('div');
+    div_container.id = "player_container";
+    var div = document.createElement('div');
+    div.id = "player_youtube";
 
     function scriptinjections(source){
         //Creating another script that to contains JavaScript content.
