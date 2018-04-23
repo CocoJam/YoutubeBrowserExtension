@@ -46,3 +46,7 @@ document.addEventListener("visibilitychange", function (event) {
 
     }
 });
+
+window.addEventListener("message", function (event) {
+
+}
