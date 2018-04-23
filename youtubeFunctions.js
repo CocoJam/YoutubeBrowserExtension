@@ -43,13 +43,15 @@ document.addEventListener("visibilitychange", function (event) {
 
     }
     if (document.visibilityState === "visible") {
-
+        //Posting message to the content script from html to notify content script that html tab is visible.
+        window.postMessage({type: "HTMLToContent", get: "Video"}, "*");
     }
 });
 //Messaging function between html and content script.
 window.addEventListener("message", function (event) {
     //This detect the message source is from windows, which is likely to be it is from the content script.
     if (event.source === window){
-
+        //logging messages from the content script
+    console.log(event.data.name);
     }
 });
