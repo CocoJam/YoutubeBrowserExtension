@@ -6,5 +6,6 @@ window.addEventListener("message", function (event) {
     if (event.source !== window && event.origin === "https://www.youtube.com") {
         var json = JSON.parse(event.data);
         console.log(json);
+        window.postMessage({name:"From content"}, "*");
     }
 });

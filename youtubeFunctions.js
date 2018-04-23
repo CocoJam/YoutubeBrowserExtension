@@ -50,6 +50,7 @@ document.addEventListener("visibilitychange", function (event) {
 window.addEventListener("message", function (event) {
     //This detect the message source is from windows, which is likely to be it is from the content script.
     if (event.source === window){
-
+        //logging messages from the content script
+    console.log(event.data.name);
     }
 });
