@@ -5,6 +5,15 @@ var script = document.createElement('script');
 //The content to inject into the given html
 var insertion = "(" + function () {
 
+    function scriptinjections(source){
+        //Creating another script that to contains JavaScript content.
+        var scr = document.createElement('script');
+        //Loading the JavaScript content that is passed within the the argument of source.
+        scr.src =source;
+        //Attach the created script to the first script given
+        var firstScript = document.getElementsByTagName('script')[0];
+        firstScript.parentNode.insertBefore(scr, firstScript);
+    }
 } + ")()";
 
 script.textContent = insertion;
