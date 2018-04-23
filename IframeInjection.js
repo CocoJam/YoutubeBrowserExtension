@@ -19,6 +19,8 @@ var insertion = "(" + function () {
         var firstScript = document.getElementsByTagName('script')[0];
         firstScript.parentNode.insertBefore(scr, firstScript);
     }
+    //Injection of youtube Iframe API sourced from: https://developers.google.com/youtube/iframe_api_reference
+    scriptinjections( "https://www.youtube.com/iframe_api");
 } + ")()";
 
 script.textContent = insertion;
