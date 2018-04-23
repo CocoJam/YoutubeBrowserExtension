@@ -3,6 +3,11 @@
   "name": "Youtube Browser",
   "version" : "0.0.1",
   "content_scripts":[
+    {
+      "matches":[
+        "<all_urls>"],
+      "js": ["content.js"]
+    }
 ],
 "background":{
 }
