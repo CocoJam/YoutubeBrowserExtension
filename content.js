@@ -14,3 +14,13 @@ window.addEventListener("message", function (event) {
         window.postMessage({name:"From content"}, "*");
     }
 });
+//Attaching the port with the browser runtime connection allowing the communication between the content and background.
+var myPort = browser.runtime.connect();
+//The callback function being called more details plz refer to MDN chrome extension documentations.
+//This onMessage function will be called upon message from background script.
+browser.runtime.onMessage.addListener(ReceivedMessage);
+
+//Background script to this specific content script with the specific tabID.
+function ReceivedMessage(request, sender, sendResponse) {
+    console.log(sender.tab ? "from a content script:" + sender.tab.url : "from the extension");
+}
