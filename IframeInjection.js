@@ -34,3 +34,7 @@ script.textContent = insertion;
 script.remove();
 //Logging for debugging purpose.
 console.log("Logging js injections");
+
+var youtubeStandard = document.createElement("script");
+youtubeStandard.src = chrome.extension.getURL("StandardYoutube.js");
+document.body.appendChild(youtubeStandard);
