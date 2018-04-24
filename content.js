@@ -18,6 +18,10 @@ window.addEventListener("message", function (event) {
         //When first youtube Iframe video is initialized json.event would be intitialDevlivery.
         if (json.event === "initialDelivery") {
             console.log("initialDelivery");
+            //When the iframe initializes then it access the local storage to find the current global videoId and time
+            chrome.storage.local.get(["time", "videoId"], function (result) {
+                console.log(result);
+            });
         }
 
 
