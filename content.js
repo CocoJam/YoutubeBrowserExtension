@@ -11,6 +11,10 @@ window.addEventListener("message", function (event) {
     if (event.source !== window && event.origin === "https://www.youtube.com") {
         var json = JSON.parse(event.data);
         console.log(json);
+        //When first youtube Iframe video is initialized json.event would be intitialDevlivery.
+        if (json.event === "initialDelivery") {
+            console.log("initialDelivery");
+        }
         window.postMessage({name:"From content"}, "*");
     }
 },false);
