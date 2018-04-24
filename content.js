@@ -1,5 +1,9 @@
 //detecting what browser it is, if it is chrome it will return chrome. Otherwise then it will return associated browser.
 const browser = chrome || browers;
+//local variables to be used for this specific content script
+var currentVideoId = "";
+var currentTime = 0;
+
 window.addEventListener("message", function (event) {
     console.log(event);
     //Checking for post messages from the html to content script specifically when html tab is visible.
