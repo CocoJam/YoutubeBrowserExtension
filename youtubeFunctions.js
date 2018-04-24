@@ -58,3 +58,30 @@ window.addEventListener("message", function (event) {
         player.loadVideoById(event.data.videoId, event.data.Time);
     }
 },false);
+
+//Creating temper search functions bars which will be substitute later
+var inputTab = document.createElement("input");
+inputTab.type = "text";
+inputTab.id = "Hello";
+inputTab.size = 60;
+
+inputTab.addEventListener("keyup", function (event) {
+    event.preventDefault();
+    //Preventing event submission then uses the google API with api key generated already to send a fetch request (GET).
+    //This fetch request will return with snippet and id of the video based on q (query value).
+    //Key code 13 is the keycode for enter.
+    if (event.keyCode === 13) {
+        $.get("https://www.googleapis.com/youtube/v3/search", {
+            part: "snippet,id",
+            q: this.value,
+            type: "video",
+            key: "AIzaSyCWm38k7P0UaGK_HhvrQ0RNx0Fup4UVnnc"
+        }, function (data) {
+            //Just for testing purpose that the first item of the search will be used.
+            inputTab = data;
+            currentID = data.items[0].id.videoId;
+            //This posts the message to the content script with the video id selected.
+            window.postMessage({type: "HTMLToContent", videoId: data.items[0].id.videoId}, "*")
+        })
+    }
+});
