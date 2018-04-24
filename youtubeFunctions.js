@@ -56,6 +56,10 @@ window.addEventListener("message", function (event) {
         currentID = event.data.videoId;
         currentTime = event.data.Time;
         player.loadVideoById(event.data.videoId, event.data.Time);
+        return
+    }
+    if (event.source === window && event.data.type === "disableVideo") {
+
     }
 },false);
 
