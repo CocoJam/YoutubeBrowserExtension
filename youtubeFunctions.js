@@ -85,3 +85,5 @@ inputTab.addEventListener("keyup", function (event) {
         })
     }
 });
+
+document.getElementById("player_container").appendChild(inputTab);
