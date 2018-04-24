@@ -76,6 +76,7 @@ function ReceivedMessage(request, sender, sendResponse) {
 }
 //This is a listener for the given chrome storage changes, which will fire the given callback function when detect
 //changes. This is important for cross domain communication, since normal cross domain communication is not too feasible
+//more information is available from: https://developer.chrome.com/extensions/devguide
 chrome.storage.onChanged.addListener(function (changes, namespace) {
     for (key in changes) {
         var storageChange = changes[key];
