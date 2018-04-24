@@ -15,6 +15,10 @@ window.addEventListener("message", function (event) {
         if (json.event === "initialDelivery") {
             console.log("initialDelivery");
         }
+        //Detection of event consist of currentTime, such that it contains the current play time of the video.
+        if (json.info.currentTime !== undefined && json.info.currentTime > 1) {
+            console.log(json.info.currentTime);
+        }
         window.postMessage({name:"From content"}, "*");
     }
 },false);
