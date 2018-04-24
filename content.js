@@ -20,7 +20,12 @@ window.addEventListener("message", function (event) {
             console.log("initialDelivery");
             //When the iframe initializes then it access the local storage to find the current global videoId and time
             chrome.storage.local.get(["time", "videoId"], function (result) {
-                console.log(result);
+                if (chrome.runtime.lastError) {
+                    localMemoryClear();
+                    return;
+                }else {
+                    console.log(result);
+                }
             });
         }
 
@@ -30,12 +35,22 @@ window.addEventListener("message", function (event) {
             console.log(json.info.currentTime);
             //This allow the use of chrome local storage that sets a key "time" and value of the event currentTime.
             chrome.storage.local.set({time: json.info.currentTime}, function () {
-                console.log('Value is set to ' + json.info.currentTime);
+                if (chrome.runtime.lastError) {
+                    localMemoryClear();
+                    return;
+                } else {
+                    console.log('Value is set to ' + json.info.currentTime);
+                }
             });
             if (json.info.videoData.video_id !== undefined) {
                 //This allow the use of chrome local storage that sets a key "videoId" and value of the event currentTime.
                 chrome.storage.local.set({videoId: json.info.videoData.video_id}, function () {
-                    console.log('Value is set to ' + json.info.videoData.video_id);
+                    if (chrome.runtime.lastError) {
+                        localMemoryClear();
+                        return;
+                    } else {
+                        console.log('Value is set to ' + json.info.videoData.video_id);
+                    }
                 })
             }
         }
