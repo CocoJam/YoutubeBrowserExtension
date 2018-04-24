@@ -21,6 +21,11 @@ var insertion = "(" + function () {
     }
     //Injection of youtube Iframe API sourced from: https://developers.google.com/youtube/iframe_api_reference
     scriptinjections( "https://www.youtube.com/iframe_api");
+    //injection of google api for using the search function of the youtube Data API
+    //Sourcing from: https://developers.google.com/youtube/v3/
+    scriptinjections("https://apis.google.com/js/api.js");
+    //injectin of the jquery for ease of developmental usage.
+    scriptinjections("https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js");
 } + ")()";
 
 script.textContent = insertion;
