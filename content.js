@@ -18,10 +18,6 @@ window.addEventListener("message", function (event) {
         //Detection of event consist of currentTime, such that it contains the current play time of the video.
         if (json.info.currentTime !== undefined && json.info.currentTime > 1) {
             console.log(json.info.currentTime);
-            //This allow the use of chrome local storage that sets a key "time" and value of the event currentTime.
-            chrome.storage.local.set({time: json.info.currentTime}, function () {
-                console.log('Value is set to ' + json.info.currentTime);
-            });
         }
         window.postMessage({name:"From content"}, "*");
     }
