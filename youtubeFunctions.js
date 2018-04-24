@@ -40,7 +40,7 @@ function stopVideo() {
 document.addEventListener("visibilitychange", function (event) {
     console.log(document.visibilityState);
     if (document.visibilityState === "hidden") {
-
+        stopVideo();
     }
     if (document.visibilityState === "visible") {
         //Posting message to the content script from html to notify content script that html tab is visible.
