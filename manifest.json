@@ -9,7 +9,7 @@
       "js": ["content.js"]
     },
     {
-      "js": [ "EmptyIframeInjection.js" ],
+      "js": [ "IframeInjection.js" ],
       "matches": [ "<all_urls>" ],
       "run_at": "document_end"
     }
