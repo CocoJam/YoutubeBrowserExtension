@@ -58,8 +58,15 @@ window.addEventListener("message", function (event) {
         player.loadVideoById(event.data.videoId, event.data.Time);
         return
     }
+    //The display function to hide or display the youtube iframe depending one the style of the iframe.
     if (event.source === window && event.data.type === "disableVideo") {
-
+        if (iframe.style.display === "none") {
+            iframe.style.display = "block";
+            player.loadVideoById(currentID, currentTime);
+        } else if (iframe.style.display === "block" || iframe.style.display === "") {
+            iframe.style.display = "none";
+            player.stopVideo();
+        }
     }
 },false);
 
