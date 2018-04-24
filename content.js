@@ -70,6 +70,7 @@ browser.runtime.onMessage.addListener(ReceivedMessage);
 
 //Background script to this specific content script with the specific tabID.
 function ReceivedMessage(request, sender, sendResponse) {
+
     console.log(sender.tab ? "from a content script:" + sender.tab.url : "from the extension");
 }
 //This is a listener for the given chrome storage changes, which will fire the given callback function when detect
