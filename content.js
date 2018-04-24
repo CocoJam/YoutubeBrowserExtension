@@ -9,6 +9,8 @@ window.addEventListener("message", function (event) {
     //Checking for post messages from the html to content script specifically when html tab is visible.
     if (event.data.get !== undefined && event.data.get === "Video") {
         console.log(event.data);
+        //Posting back the current Video id and Current Time back to html script.
+        window.postMessage({videoId: currentVideoId, Time: currentTime}, "*")
     }
 
     //communication from html to content goes here and detecting youtube messages from youtube iframe API
