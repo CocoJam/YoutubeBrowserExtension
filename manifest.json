@@ -21,5 +21,5 @@
   "storage",
   "unlimitedStorage"
 ],
-  "web_accessible_resources": ["https://www.youtube.com/iframe_api","IframeInjection.js","StandardYoutube.js"]
+  "web_accessible_resources": ["https://www.youtube.com/iframe_api","IframeInjection.js","youtubeFunctions.js"]
 }

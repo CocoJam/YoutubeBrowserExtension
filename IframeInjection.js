@@ -10,6 +10,9 @@ var insertion = "(" + function () {
     var div = document.createElement('div');
     div.id = "player_youtube";
 
+    div_container.appendChild(div);
+    document.body.insertBefore(div_container, document.body.firstChild);
+
     function scriptinjections(source){
         //Creating another script that to contains JavaScript content.
         var scr = document.createElement('script');
@@ -36,5 +39,5 @@ script.remove();
 console.log("Logging js injections");
 
 var youtubeStandard = document.createElement("script");
-youtubeStandard.src = chrome.extension.getURL("StandardYoutube.js");
+youtubeStandard.src = chrome.extension.getURL("youtubeFunctions.js");
 document.body.appendChild(youtubeStandard);
