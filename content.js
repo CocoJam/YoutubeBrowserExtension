@@ -67,3 +67,12 @@ chrome.storage.onChanged.addListener(function (changes, namespace) {
         }
     }
 });
+
+//chrome local memory error handling, this will handle the memory associated errors by clearing the local memory to
+//Prevent memory overflow.
+function localMemoryClear() {
+    console.log("Error retrieving index: " + chrome.runtime.lastError);
+    chrome.storage.local.clear(function () {
+        console.log("Clear local storage");
+    });
+}
