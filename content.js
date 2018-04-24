@@ -55,5 +55,11 @@ chrome.storage.onChanged.addListener(function (changes, namespace) {
         var storageChange = changes[key];
         //Detecting the storage changes in terms of the old value/state, while also acessing the new value coming in.
         console.log('Storage key "%s" in namespace "%s" changed. Old value was "%s", new value is "%s".', key, namespace, storageChange.oldValue, storageChange.newValue);
+        if (key === "videoId") {
+            currentVideoId = storageChange.newValue;
+        }
+        if (key === "time") {
+            currentTime = storageChange.newValue;
+        }
     }
 });
