@@ -54,4 +54,4 @@ window.addEventListener("message", function (event) {
         //logging messages from the content script
     console.log(event.data.name);
     }
-});
+},false);

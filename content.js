@@ -13,7 +13,7 @@ window.addEventListener("message", function (event) {
         console.log(json);
         window.postMessage({name:"From content"}, "*");
     }
-});
+},false);
 //Attaching the port with the browser runtime connection allowing the communication between the content and background.
 var myPort = browser.runtime.connect();
 //The callback function being called more details plz refer to MDN chrome extension documentations.
