@@ -25,8 +25,11 @@ window.addEventListener("message", function (event) {
                     return;
                 }else {
                     console.log(result);
+                    //posting messages of the videoid and current time to html after initialDelivery is received.
+                    window.postMessage({videoId: result.videoId, Time: result.time}, "*");
                 }
             });
+            return;
         }
 
 

@@ -50,8 +50,11 @@ document.addEventListener("visibilitychange", function (event) {
 //Messaging function between html and content script.
 window.addEventListener("message", function (event) {
     //This detect the message source is from windows, which is likely to be it is from the content script.
-    if (event.source === window){
-        //logging messages from the content script
-    console.log(event.data.name);
+    //To receive the message event from content script and detect the data.videoId for changing the videoId when init.
+    if (event.source === window && event.data.videoId !== undefined) {
+        console.log(event);
+        currentID = event.data.videoId;
+        currentTime = event.data.Time;
+        player.loadVideoById(event.data.videoId, event.data.Time);
     }
 },false);
