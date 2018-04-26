@@ -65,7 +65,28 @@
     var player = createElement("div", "player");
     parentDiv.append(player);
 
+    // Create a div for search bar
+    var searchBar = createElement("div", "searchBar");
+    parentDiv.append(searchBar);
+    searchBar.style.width = iFrameInitWidth + 'px';
+    //searchBar.style.width = "100px";
+    searchBar.className = "ui mini input";
 
+    // Add query tag and search button
+    var query = createElement("input", "query")
+    query.placeholder = "Search...";
+    searchBar.append(query);
+    query.style.width = iFrameInitWidth/2 + 'px';
+
+    var searchButton = createElement("button", "searchButton");
+    searchButton.innerHTML = "Search";
+    searchButton.className = "ui olive button" + ", " + "mini ui button" ;
+    searchBar.append(searchButton);
+
+    // Create a div to contain the search results
+    var searchResults = createElement("div", "searchResults");
+    parentDiv.append(searchResults);
+    searchResults.style.width = iFrameInitWidth +'px';
 
     // 4. The API will call this function when the video player is ready.
     function onPlayerReady(event) {
