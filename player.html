@@ -9,61 +9,7 @@
 
     <style>
 
-        #grandParentDiv {
-            position: relative;
-            overflow: hidden;
-            background: transparent;
-            width: 680px;
-            height: 530px;
-        }
 
-        #parentDiv {
-            position: fixed;
-            float: top;
-            width: auto;
-            width: 650px;
-            height: 400px;
-            align-items: center;
-            display: inline-block;
-            align-items: center;
-            justify-content: center;
-        }
-
-        #searchBar {
-            position: fixed;
-            display: block;
-            align-items: center;
-            justify-content: center;
-        }
-
-        #query, #searchButton {
-            margin: 2px;
-        }
-
-        #searchResults {
-            margin-top: 40px;
-            display: flex;
-        }
-
-        #videoTitle {
-            text-align: center;
-            -moz-text-size-adjust: auto;
-        }
-
-        .viewCount {
-            text-align: center;
-            float: left;
-        }
-
-        #resizer {
-            width: 10px;
-            height: 10px;
-            position: absolute;
-            background: olivedrab;
-            right: 0;
-            bottom: 0;
-            cursor: se-resize;
-        }
     </style>
 </head>
 <body>
@@ -118,6 +64,8 @@
     // Create div for the iFrame
     var player = createElement("div", "player");
     parentDiv.append(player);
+
+
 
     // 4. The API will call this function when the video player is ready.
     function onPlayerReady(event) {
