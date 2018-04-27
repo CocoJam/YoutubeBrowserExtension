@@ -5,13 +5,9 @@ var script = document.createElement('script');
 //The content to inject into the given html
 var insertion = "(" + function () {
 //Dynamically inject div within the html which would be used to contain the Iframe of the youtube API.
-    var div_container = document.createElement('div');
-    div_container.id = "player_container";
-    var div = document.createElement('div');
-    div.id = "player_youtube";
-
-    div_container.appendChild(div);
-    document.body.insertBefore(div_container, document.body.firstChild);
+//     var div_container = document.createElement('div');
+//     div_container.id = "player";
+//     document.body.insertBefore(div_container, document.body.firstChild);
 
     function scriptinjections(source){
         //Creating another script that to contains JavaScript content.
@@ -22,6 +18,23 @@ var insertion = "(" + function () {
         var firstScript = document.getElementsByTagName('script')[0];
         firstScript.parentNode.insertBefore(scr, firstScript);
     }
+
+    cssLinkinjections("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.css");
+    cssLinkinjections("//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css");
+    cssLinkinjections("/resources/demos/style.css");
+    cssLinkinjections("./playerCss.css");
+
+
+    function cssLinkinjections(source){
+
+        //creating Css script required from the playerCss.css
+        var cssScript = document.createElement("link");
+        cssScript.rel = source;
+        cssScript.type = "text/css";
+        document.getElementsByTagName("head")[0].appendChild(cssScript);
+        var firstScript = document.getElementsByTagName('link')[0];
+        firstScript.parentNode.insertBefore(cssScript, firstScript);
+    }
     //Injection of youtube Iframe API sourced from: https://developers.google.com/youtube/iframe_api_reference
     scriptinjections( "https://www.youtube.com/iframe_api");
     //injection of google api for using the search function of the youtube Data API
@@ -29,6 +42,11 @@ var insertion = "(" + function () {
     scriptinjections("https://apis.google.com/js/api.js");
     //injectin of the jquery for ease of developmental usage.
     scriptinjections("https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js");
+
+    scriptinjections("https://code.jquery.com/ui/1.12.1/jquery-ui.js");
+    scriptinjections("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.js");
+
+
 } + ")()";
 
 script.textContent = insertion;

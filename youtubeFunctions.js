@@ -1,3 +1,10 @@
+//creating Css script required from the playerCss.css
+var cssScript = document.createElement("link");
+cssScript.href = "./playerCss.css";
+cssScript.type = "text/css";
+cssScript.link = "stylesheet";
+document.getElementsByTagName("head")[0].appendChild(cssScript);
+
 //variables that will be used to reference
 var player;
 var currentID = "";
@@ -6,7 +13,7 @@ var currentTime = 0;
 //referencing the example codes from https://developers.google.com/youtube/iframe_api_reference
 function onYouTubeIframeAPIReady() {
     //The videoId is the id of the video wanted
-    player = new YT.Player('player_youtube', {
+    player = new YT.Player('player', {
         height: '390',
         width: '640',
         videoId: currentID,
@@ -69,32 +76,292 @@ window.addEventListener("message", function (event) {
         }
     }
 },false);
+// This code loads the IFrame Player API code asynchronously.
+var tag = document.createElement('script');
+tag.src = "https://www.youtube.com/iframe_api";
+var firstScriptTag = document.getElementsByTagName('script')[0];
+firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-//Creating temper search functions bars which will be substitute later
-var inputTab = document.createElement("input");
-inputTab.type = "text";
-inputTab.id = "Hello";
-inputTab.size = 60;
+// This function creates an <iframe> (and YouTube player)
+// after the API code downloads.
+var player;
+var dataYT;
 
-inputTab.addEventListener("keyup", function (event) {
-    event.preventDefault();
-    //Preventing event submission then uses the google API with api key generated already to send a fetch request (GET).
-    //This fetch request will return with snippet and id of the video based on q (query value).
-    //Key code 13 is the keycode for enter.
-    if (event.keyCode === 13) {
-        $.get("https://www.googleapis.com/youtube/v3/search", {
-            part: "snippet,id",
-            q: this.value,
-            type: "video",
-            key: "AIzaSyCWm38k7P0UaGK_HhvrQ0RNx0Fup4UVnnc"
-        }, function (data) {
-            //Just for testing purpose that the first item of the search will be used.
-            inputTab = data;
-            currentID = data.items[0].id.videoId;
-            //This posts the message to the content script with the video id selected.
-            window.postMessage({type: "HTMLToContent", videoId: data.items[0].id.videoId}, "*")
-        })
-    }
+function onYouTubeIframeAPIReady() {
+    player = new YT.Player('player', {
+        height: "390",
+        width: "640",
+        videoId: 'M7lc1UVf-VE',
+        events: {
+            'onReady': onPlayerReady,
+            'onStateChange': onPlayerStateChange,
+        }
+    });
+}
+
+// Create HTML element function
+function createElement(tag, id) {
+    var element = document.createElement(tag);
+    element.id = id;
+    return element;
+}
+
+// Create grandParenetDiv and parentDiv
+var grandParentDiv = createElement('div', 'grandParentDiv');
+document.body.appendChild(grandParentDiv);
+
+var parentDiv = createElement("div", "parentDiv");
+grandParentDiv.append(parentDiv);
+
+// iFrame's initial width
+var iFrameInitWidth = parentDiv.offsetWidth - 10;
+
+// Create div for the iFrame
+var player = createElement("div", "player");
+parentDiv.append(player);
+
+// Create a div for search bar
+var searchBar = createElement("div", "searchBar");
+parentDiv.append(searchBar);
+searchBar.style.width = iFrameInitWidth + 'px';
+//searchBar.style.width = "100px";
+searchBar.className = "ui mini input";
+
+// Add query tag and search button
+var query = createElement("input", "query")
+query.placeholder = "Search...";
+searchBar.append(query);
+query.style.width = iFrameInitWidth/2 + 'px';
+
+var searchButton = createElement("button", "searchButton");
+searchButton.innerHTML = "Search";
+searchButton.className = "ui olive button" + ", " + "mini ui button" ;
+searchBar.append(searchButton);
+
+// Create a div to contain the search results
+var searchResults = createElement("div", "searchResults");
+parentDiv.append(searchResults);
+searchResults.style.width = iFrameInitWidth +'px';
+
+function searchVideo() {
+
+    $.get("https://www.googleapis.com/youtube/v3/search", {
+            part: 'snippet,id',
+            q: document.getElementById("query").value,
+            type: 'video',
+            key: 'AIzaSyBY1d9RpLqmieVnW0UjQD2Vahs2thzDsBw'
+        },
+
+        // Display the search results
+        function (data) {
+
+            // Clear the previous search results
+            while (searchResults.hasChildNodes()) {
+                searchResults.removeChild(searchResults.lastChild);
+            }
+
+            //Hide or display the search results
+            $(document).ready(function(){
+
+                $("#hide").click(function(){
+                    $("#searchResults").hide();
+                });
+
+                $("#display").click(function(){
+                    $("#searchResults").show();
+                });
+            });
+            dataYT = data.items;
+            dataYT.forEach(function(data){
+                var thumbnailWidth = (searchResults.offsetWidth)*0.15 + 'px';
+                var thumbnailMargin =  (searchResults.offsetWidth)*0.025 + 'px'
+
+                var thumbnail = document.createElement("img");
+
+                var thumbnailContainer = document.createElement("div");
+                thumbnailContainer.id = "thumbnailContainer";
+                thumbnailContainer.style.width = thumbnailWidth;
+
+                thumbnailContainer.style.marginLeft = thumbnailMargin;
+                thumbnailContainer.style.marginRight = thumbnailMargin;
+
+                thumbnail.style.width = thumbnailWidth;
+
+                thumbnail.src  = data.snippet.thumbnails.default.url;
+                //var br = document.createElement('br');
+
+                searchResults.append(thumbnailContainer);
+                thumbnailContainer.append(thumbnail);
+
+                // Get the number of views
+                var viewCountData;
+
+                $.get("https://www.googleapis.com/youtube/v3/videos", {
+                        part: 'snippet,contentDetails,statistics',
+                        id: data.id.videoId,
+                        key: 'AIzaSyBY1d9RpLqmieVnW0UjQD2Vahs2thzDsBw'
+                    },
+                    function (data) {
+
+                        viewCountData = data.items[0].statistics.viewCount;
+                        var viewCount = document.createElement("div");
+
+                        function formatViewCountData (num) {
+                            var numLength = num.length;
+                            if(numLength >= 10) {
+
+                                return (parseFloat(num)/1000000000).toFixed(1) + "B views";
+
+                            } else if(numLength >= 7) {
+                                return (parseFloat(num)/1000000).toFixed(0) + "M views";
+
+                            } else if (numLength >= 4) {
+                                return (parseFloat(num)/1000).toFixed(1) + "K views";
+
+                            } else {
+                                return num + " views";
+                            }
+                        }
+                        viewCount.innerHTML = formatViewCountData(viewCountData) + '';
+                        viewCount.className = "viewCount";
+                        viewCount.style.width = thumbnailWidth;
+                        thumbnailContainer.append(viewCount);
+
+                    });
+
+
+                //Users are able to play the videos of their choice
+                function chooseVideo(){
+                    player.loadVideoById(data.id.videoId);
+                };
+                thumbnail.addEventListener("click", chooseVideo);
+
+                var videoTitle = document.createElement('div');
+                parentDiv.append(videoTitle);
+                videoTitle.id = "videoTitle";
+
+                function showTitle() {
+                    videoTitle.innerHTML = '<br>' + data.snippet.title;
+                    videoTitle.style.fontSize = "20px";
+                }
+                thumbnail.addEventListener("mouseover", showTitle);
+
+                function clearTittle() {
+                    videoTitle.innerHTML = "";
+                }
+                thumbnail.addEventListener("mouseout", clearTittle);
+            });
+        });
+}
+// Positioning the search bar
+searchBar.style.marginLeft = (parentDiv.offsetWidth - searchBar.offsetWidth)/2 + 'px';
+
+//Ref: https://stackoverflow.com/questions/8960193/how-to-make-html-element-resizable-using-pure-javascript)
+var resizer = document.createElement("div");
+resizer.id = 'resizer';
+parentDiv.append(resizer);
+resizer.addEventListener('mousedown', initResize, false);
+
+function initResize(e) {
+    window.addEventListener('mousemove', Resize, false);
+    window.addEventListener('mouseup', stopResize, false);
+}
+
+// Resize the parentDiv's size
+// Then the iFrame's size is adjusted accordingly
+function Resize(e) {
+
+    var newWidth = e.clientX - parentDiv.offsetLeft;
+    var newHeight = e.clientY - parentDiv.offsetTop;
+
+    parentDiv.style.width = newWidth + 'px';
+    parentDiv.style.height = newHeight + 'px';
+
+    player.setSize(newWidth - 10 + 'px', newHeight - 10 + 'px');
+
+    searchBar.style.width = newWidth - 10 + 'px';
+    query.style.width = (newWidth - 10)/2 + 'px';
+
+    searchResults.style.width = newWidth - 10 + 'px';
+
+    $("#searchResults").find("*").css("width", (searchResults.offsetWidth - 10)*0.15 + 'px');
+    $("#searchResults").find("*").css("marginLeft", (searchResults.offsetWidth - 10)*0.025 + 'px');
+    $("#searchResults").find("*").css("marginRight", (searchResults.offsetWidth - 10)*0.025 + 'px');
+
+    grandParentDiv.style.width = parentDiv.offsetWidth + 20 + 'px';
+    grandParentDiv.style.height = parentDiv.offsetHeight + searchBar.offsetHeight + searchResults.offsetHeight + 20 + 'px';
+
+}
+function stopResize(e) {
+    window.removeEventListener('mousemove', Resize, false);
+    window.removeEventListener('mouseup', stopResize, false);
+}
+
+//Hover the video to see the search bar
+$(document).ready(function() {
+    $("#searchBar").hide();
+    $("#searchResults").hide();
+
+    $("#grandParentDiv").hover( function() {
+        $("#searchBar").toggle();
+        $("#searchResults").toggle();
+    });
+
+    $("#resizer").hide();
+    $("#grandParentDiv").hover(function () {
+        $("#resizer").toggle();
+    })
 });
 
-document.getElementById("player_container").appendChild(inputTab);
+//Make the grandParentDiv draggable
+dragElement(grandParentDiv);
+
+function dragElement(elmnt) {
+    var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+    if (searchBar) {
+        /* if present, the header is where you move the DIV from:*/
+        searchBar.onmousedown = dragMouseDown;
+    } else {
+        /* otherwise, move the DIV from anywhere inside the DIV:*/
+        elmnt.onmousedown = dragMouseDown;
+    }
+
+    function dragMouseDown(e) {
+        e = e || window.event;
+        // get the mouse cursor position at startup:
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        document.onmouseup = closeDragElement;
+        // call a function whenever the cursor moves:
+        document.onmousemove = elementDrag;
+    }
+
+    function elementDrag(e) {
+        e = e || window.event;
+        // calculate the new cursor position:
+        pos1 = pos3 - e.clientX;
+        pos2 = pos4 - e.clientY;
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        // set the element's new position:
+        elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+        elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+    }
+
+    function closeDragElement() {
+        /* stop moving when mouse button is released:*/
+        document.onmouseup = null;
+        document.onmousemove = null;
+    }
+}
+
+// Click SearchButton to generate search results
+searchButton.onclick = searchVideo;
+
+// Enter to get the search results
+query.addEventListener("keyup", function (event) {
+    event.preventDefault();
+    if (event.keyCode === 13) {
+        searchButton.click();
+    }
+});
