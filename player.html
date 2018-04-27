@@ -254,41 +254,8 @@
                 });
             });
     }
-
-    //Hover the video to see the search bar
-    $(document).ready(function() {
-        $("#searchBar").hide();
-        $("#searchResults").hide();
-
-        $("#grandParentDiv").hover( function() {
-            $("#searchBar").toggle();
-            $("#searchResults").toggle();
-        });
-
-        $("#resizer").hide();
-        $("#grandParentDiv").hover(function () {
-            $("#resizer").toggle();
-        })
-    });
-    
     // Positioning the search bar
     searchBar.style.marginLeft = (parentDiv.offsetWidth - searchBar.offsetWidth)/2 + 'px';
-
-    //Hover the video to see the search bar
-    $(document).ready(function() {
-        $("#searchBar").hide();
-        $("#searchResults").hide();
-
-        $("#grandParentDiv").hover( function() {
-            $("#searchBar").toggle();
-            $("#searchResults").toggle();
-        });
-
-        $("#resizer").hide();
-        $("#grandParentDiv").hover(function () {
-            $("#resizer").toggle();
-        })
-    });
 
     //Ref: https://stackoverflow.com/questions/8960193/how-to-make-html-element-resizable-using-pure-javascript)
     var resizer = document.createElement("div");
@@ -331,6 +298,21 @@
         window.removeEventListener('mouseup', stopResize, false);
     }
 
+    //Hover the video to see the search bar
+    $(document).ready(function() {
+        $("#searchBar").hide();
+        $("#searchResults").hide();
+
+        $("#grandParentDiv").hover( function() {
+            $("#searchBar").toggle();
+            $("#searchResults").toggle();
+        });
+
+        $("#resizer").hide();
+        $("#grandParentDiv").hover(function () {
+            $("#resizer").toggle();
+        })
+    });
 
     //Make the grandParentDiv draggable
     dragElement(grandParentDiv);
@@ -374,7 +356,6 @@
         }
     }
 
-
     // Click SearchButton to generate search results
     searchButton.onclick = searchVideo;
 
@@ -385,7 +366,6 @@
             searchButton.click();
         }
     })
-
     // 4. The API will call this function when the video player is ready.
     function onPlayerReady(event) {
         event.target.playVideo();
@@ -408,5 +388,3 @@
 </script>
 </body>
 </html>
-
-
