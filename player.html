@@ -254,6 +254,23 @@
                 });
             });
     }
+
+    //Hover the video to see the search bar
+    $(document).ready(function() {
+        $("#searchBar").hide();
+        $("#searchResults").hide();
+
+        $("#grandParentDiv").hover( function() {
+            $("#searchBar").toggle();
+            $("#searchResults").toggle();
+        });
+
+        $("#resizer").hide();
+        $("#grandParentDiv").hover(function () {
+            $("#resizer").toggle();
+        })
+    });
+
     // Positioning the search bar
     searchBar.style.marginLeft = (parentDiv.offsetWidth - searchBar.offsetWidth)/2 + 'px';
 
