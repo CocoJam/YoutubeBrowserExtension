@@ -67,6 +67,41 @@
     </style>
 </head>
 <body>
+<script>
+    // Create grandParenetDiv and parentDiv
+    var grandParentDiv = createElement('div', 'grandParentDiv');
+    document.body.appendChild(grandParentDiv);
 
+    var parentDiv = createElement("div", "parentDiv");
+    grandParentDiv.append(parentDiv);
+
+
+    // Create div for the iFrame
+    var player = createElement("div", "player");
+    parentDiv.append(player);
+
+    // Create a div for search bar
+    var searchBar = createElement("div", "searchBar");
+    parentDiv.append(searchBar);
+    searchBar.style.width = iFrameInitWidth + 'px';
+    //searchBar.style.width = "100px";
+    searchBar.className = "ui mini input";
+
+    // Add query tag and search button
+    var query = createElement("input", "query")
+    query.placeholder = "Search...";
+    searchBar.append(query);
+    query.style.width = iFrameInitWidth/2 + 'px';
+
+    var searchButton = createElement("button", "searchButton");
+    searchButton.innerHTML = "Search";
+    searchButton.className = "ui olive button" + ", " + "mini ui button" ;
+    searchBar.append(searchButton);
+
+    // Create a div to contain the search results
+    var searchResults = createElement("div", "searchResults");
+    parentDiv.append(searchResults);
+    searchResults.style.width = iFrameInitWidth +'px';
+</script>
 </body>
 </html>
