@@ -1,5 +1,5 @@
 #grandParentDiv {
-    position: relative;
+    position: fixed;
     overflow: hidden;
     background: transparent;
     width: 680px;

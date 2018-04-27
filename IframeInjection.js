@@ -20,20 +20,22 @@ var insertion = "(" + function () {
     }
 
     cssLinkinjections("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.css");
-    cssLinkinjections("//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css");
+    cssLinkinjections("https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css");
     cssLinkinjections("/resources/demos/style.css");
-    cssLinkinjections("./playerCss.css");
 
+
+    // document.body.appendChild(youtubeStandard);
 
     function cssLinkinjections(source){
 
         //creating Css script required from the playerCss.css
         var cssScript = document.createElement("link");
-        cssScript.rel = source;
-        cssScript.type = "text/css";
+        cssScript.setAttribute("rel", "stylesheet");
+        cssScript.setAttribute("type", "text/css");
+        cssScript.setAttribute("href",source);
+
         document.getElementsByTagName("head")[0].appendChild(cssScript);
-        var firstScript = document.getElementsByTagName('link')[0];
-        firstScript.parentNode.insertBefore(cssScript, firstScript);
+
     }
     //Injection of youtube Iframe API sourced from: https://developers.google.com/youtube/iframe_api_reference
     scriptinjections( "https://www.youtube.com/iframe_api");
@@ -55,6 +57,10 @@ script.textContent = insertion;
 script.remove();
 //Logging for debugging purpose.
 console.log("Logging js injections");
+
+var customCss = document.createElement("link");
+customCss.setAttribute("href",chrome.extension.getURL("./playerCss.css"));
+document.getElementsByTagName("head")[0].appendChild(customCss);
 
 var youtubeStandard = document.createElement("script");
 youtubeStandard.src = chrome.extension.getURL("youtubeFunctions.js");
