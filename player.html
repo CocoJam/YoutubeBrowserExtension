@@ -254,6 +254,10 @@
             });
     }
 
+    // Positioning the search bar
+    searchBar.style.marginLeft = (parentDiv.offsetWidth - searchBar.offsetWidth)/2 + 'px';
+
+
     // 4. The API will call this function when the video player is ready.
     function onPlayerReady(event) {
         event.target.playVideo();
