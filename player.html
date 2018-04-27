@@ -258,6 +258,48 @@
     searchBar.style.marginLeft = (parentDiv.offsetWidth - searchBar.offsetWidth)/2 + 'px';
 
 
+    //Ref: https://stackoverflow.com/questions/8960193/how-to-make-html-element-resizable-using-pure-javascript)
+    var resizer = document.createElement("div");
+    resizer.id = 'resizer';
+    parentDiv.append(resizer);
+    resizer.addEventListener('mousedown', initResize, false);
+
+    function initResize(e) {
+        window.addEventListener('mousemove', Resize, false);
+        window.addEventListener('mouseup', stopResize, false);
+    }
+
+    // Resize the parentDiv's size
+    // Then the iFrame's size is adjusted accordingly
+    function Resize(e) {
+
+        var newWidth = e.clientX - parentDiv.offsetLeft;
+        var newHeight = e.clientY - parentDiv.offsetTop;
+
+        parentDiv.style.width = newWidth + 'px';
+        parentDiv.style.height = newHeight + 'px';
+
+        player.setSize(newWidth - 10 + 'px', newHeight - 10 + 'px');
+
+        searchBar.style.width = newWidth - 10 + 'px';
+        query.style.width = (newWidth - 10)/2 + 'px';
+
+        searchResults.style.width = newWidth - 10 + 'px';
+
+        $("#searchResults").find("*").css("width", (searchResults.offsetWidth - 10)*0.15 + 'px');
+        $("#searchResults").find("*").css("marginLeft", (searchResults.offsetWidth - 10)*0.025 + 'px');
+        $("#searchResults").find("*").css("marginRight", (searchResults.offsetWidth - 10)*0.025 + 'px');
+
+        grandParentDiv.style.width = parentDiv.offsetWidth + 20 + 'px';
+        grandParentDiv.style.height = parentDiv.offsetHeight + searchBar.offsetHeight + searchResults.offsetHeight + 20 + 'px';
+
+    }
+    function stopResize(e) {
+        window.removeEventListener('mousemove', Resize, false);
+        window.removeEventListener('mouseup', stopResize, false);
+    }
+
+
     //Make the grandParentDiv draggable
     dragElement(grandParentDiv);
 
