@@ -5,6 +5,14 @@ var currentVideoId = "";
 var currentTime = 0;
 
 window.addEventListener("message", function (event) {
+    if (event.data.type === "ÏframeOnReadyEvent"){
+        console.log("IframeOnReadyEvent")
+        var youtubeStandard = document.createElement("script");
+        youtubeStandard.src = chrome.extension.getURL("youtubeFunctions.js");
+        document.body.appendChild(youtubeStandard);
+        window.postMessage({type: "triggerOnYouTubeIframeAPIReady"},"*")
+    }
+
     console.log(event);
     //Checking for post messages from the html to content script specifically when html tab is visible.
     if (event.data.get !== undefined && event.data.get === "Video") {

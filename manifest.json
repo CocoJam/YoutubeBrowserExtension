@@ -24,5 +24,6 @@
   "storage",
   "unlimitedStorage"
 ],
-  "web_accessible_resources": ["https://www.youtube.com/iframe_api","IframeInjection.js","youtubeFunctions.js","playerCss.css"]
+  "web_accessible_resources": ["https://www.youtube.com/iframe_api","IframeInjection.js","youtubeFunctions.js","playerCss.css","youtubeIframeTrigger.js"],
+  "content_security_policy": "script-src default-src * data: blob:;script-src *.facebook.com *.fbcdn.net *.facebook.net *.google-analytics.com *.virtualearth.net *.google.com 127.0.0.1:* *.spotilocal.com:* 'unsafe-inline' 'unsafe-eval' fbstatic-a.akamaihd.net fbcdn-static-b-a.akamaihd.net *.atlassolutions.com blob: data: 'self';style-src data: blob: 'unsafe-inline' *;connect-src *.facebook.com facebook.com *.fbcdn.net *.facebook.net *.spotilocal.com:* *.akamaihd.net wss://*.facebook.com:* https://fb.scanandcleanlocal.com:* *.atlassolutions.com attachment.fbsbx.com ws://localhost:* blob: *.cdninstagram.com 'self' chrome-extension://boadgeojelhgndaghljhdicfkmllpafd chrome-extension://dliochdbjfkdbacpmhlcpmleaejidimm;"
 }

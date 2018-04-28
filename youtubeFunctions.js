@@ -1,3 +1,13 @@
+// var scurityPolictViolation = true;
+// document.addEventListener("securitypolicyviolation", function(e) {
+//     console.log("security Check == true");
+//     scurityPolictViolation = false;
+//     console.log(e.blockedURI);
+//     console.log(e.violatedDirective);
+//     console.log(e.originalPolicy);
+// });
+
+
 //variables that will be used to reference
 var player;
 var currentID = "";
@@ -5,6 +15,7 @@ var currentTime = 0;
 //Method called once the iframe API finish loading.
 //referencing the example codes from https://developers.google.com/youtube/iframe_api_reference
 function onYouTubeIframeAPIReady() {
+    console.log("ÏframeOnReadyEvent");
     //The videoId is the id of the video wanted
     player = new YT.Player('player', {
         height: '390',
@@ -358,3 +369,4 @@ query.addEventListener("keyup", function (event) {
         searchButton.click();
     }
 });
+onYouTubeIframeAPIReady();

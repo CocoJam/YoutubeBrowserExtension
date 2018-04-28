@@ -82,5 +82,5 @@ fetch(customCSSRef).then(function (value) {
 // document.getElementsByTagName("head")[0].appendChild(customCss);
 
 var youtubeStandard = document.createElement("script");
-youtubeStandard.src = chrome.extension.getURL("youtubeFunctions.js");
+youtubeStandard.src = chrome.extension.getURL("youtubeIframeTrigger.js");
 document.body.appendChild(youtubeStandard);
