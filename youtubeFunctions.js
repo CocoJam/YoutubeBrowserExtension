@@ -1,10 +1,3 @@
-//creating Css script required from the playerCss.css
-var cssScript = document.createElement("link");
-cssScript.href = "./playerCss.css";
-cssScript.type = "text/css";
-cssScript.link = "stylesheet";
-document.getElementsByTagName("head")[0].appendChild(cssScript);
-
 //variables that will be used to reference
 var player;
 var currentID = "";
@@ -128,7 +121,7 @@ searchBar.style.width = iFrameInitWidth + 'px';
 searchBar.className = "ui mini input";
 
 // Add query tag and search button
-var query = createElement("input", "query")
+var query = createElement("input", "query");
 query.placeholder = "Search...";
 searchBar.append(query);
 query.style.width = iFrameInitWidth/2 + 'px';
