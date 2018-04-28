@@ -5,8 +5,10 @@ var currentVideoId = "";
 var currentTime = 0;
 
 window.addEventListener("message", function (event) {
+    //This will recieve a message from the youtubeIframeTrigger.js when the youtube IFrame API did and finsihed loading
+    //Then apply the attachment of the actually functionality of the youtubeFunction.js.
     if (event.data.type === "ÏframeOnReadyEvent"){
-        console.log("IframeOnReadyEvent")
+        console.log("IframeOnReadyEvent");
         var youtubeStandard = document.createElement("script");
         youtubeStandard.src = chrome.extension.getURL("youtubeFunctions.js");
         document.body.appendChild(youtubeStandard);
