@@ -47,7 +47,9 @@ window.addEventListener("message", function (event) {
                     console.log('Value is set to ' + json.info.currentTime);
                 }
             });
-            if (json.info.videoData.video_id !== undefined) {
+            if (json.info.videoData.video_id !== undefined && json.info.videoData.video_id !== null ) {
+                console.log("videoId");
+                console.log(json);
                 //This allow the use of chrome local storage that sets a key "videoId" and value of the event currentTime.
                 chrome.storage.local.set({videoId: json.info.videoData.video_id}, function () {
                     if (chrome.runtime.lastError) {
