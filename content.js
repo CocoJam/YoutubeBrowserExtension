@@ -3,7 +3,7 @@ const browser = chrome || browers;
 //local variables to be used for this specific content script
 var currentVideoId = "";
 var currentTime = 0;
-
+var alertOfYouTubeIframeIsAttached = false;
 window.addEventListener("message", function (event) {
     //This will recieve a message from the youtubeIframeTrigger.js when the youtube IFrame API did and finsihed loading
     //Then apply the attachment of the actually functionality of the youtubeFunction.js.
@@ -12,9 +12,15 @@ window.addEventListener("message", function (event) {
         var youtubeStandard = document.createElement("script");
         youtubeStandard.src = chrome.extension.getURL("youtubeFunctions.js");
         document.body.appendChild(youtubeStandard);
+        alertOfYouTubeIframeIsAttached = !alertOfYouTubeIframeIsAttached;
         window.postMessage({type: "triggerOnYouTubeIframeAPIReady"},"*")
     }
-
+    //This will alert the user that the youtube Iframe API is not attached
+    if (!alertOfYouTubeIframeIsAttached){
+        alert("youtube!!!");
+        alertOfYouTubeIframeIsAttached=!alertOfYouTubeIframeIsAttached;
+        return;
+    }
     console.log(event);
     //Checking for post messages from the html to content script specifically when html tab is visible.
     if (event.data.get !== undefined && event.data.get === "Video") {
