@@ -278,8 +278,7 @@ function initResize(e) {
 // Then the iFrame's size is adjusted accordingly
 function Resize(e) {
     var iframeSize = Resizing(e.clientX, e.clientY);
-    //This posts the message to the content script to be up dated
-    window.postMessage({type: "IframeResizing", width: iframeSize.width, height: iframeSize.height}, "*");
+
 }
 
 function Resizing(width,height){
@@ -309,6 +308,8 @@ function Resizing(width,height){
 function stopResize(e) {
     window.removeEventListener('mousemove', Resize, false);
     window.removeEventListener('mouseup', stopResize, false);
+    //This posts the message to the content script to be up dated
+    window.postMessage({type: "IframeResizing", width: e.clientX, height: e.clientY}, "*");
 }
 
 //Hover the video to see the search bar
