@@ -10,25 +10,9 @@
 
 //variables that will be used to reference
 var player;
-var currentID = "";
+var currentID = null;
 var currentTime = 0;
-//Method called once the iframe API finish loading.
-//referencing the example codes from https://developers.google.com/youtube/iframe_api_reference
-function onYouTubeIframeAPIReady() {
-    
-    //The videoId is the id of the video wanted
-    player = new YT.Player('player', {
-        height: '390',
-        width: '640',
-        videoId: currentID,
-        events: {
-            'onReady': onPlayerReady,
-            'onStateChange': onPlayerStateChange
-        }
-    });
-    iframe = this.player.a;
-    
-}
+var iframe = null;
 
 //event emits when video is ready to be play after loaded
 function onPlayerReady(event) {
@@ -46,7 +30,6 @@ function stopVideo() {
 
 //detect visibility of the tab, which listens to current tab's visibility change and allow interaction with it.
 document.addEventListener("visibilitychange", function (event) {
-    
     if (document.visibilityState === "hidden") {
         stopVideo();
     }
@@ -69,16 +52,15 @@ window.addEventListener("message", function (event) {
         grandParentDiv.style.top = event.data.top + "px";
         grandParentDiv.style.left = event.data.left + "px";
         Resizing(event.data.width, event.data.height);
-
         return
     }
     //The display function to hide or display the youtube iframe depending one the style of the iframe.
     if (event.source === window && event.data.type === "disableVideo") {
-        if (iframe.style.display === "none") {
-            iframe.style.display = "block";
+        if (grandParentDiv.style.display === "none") {
+            grandParentDiv.style.display = "block";
             player.loadVideoById(currentID, currentTime);
-        } else if (iframe.style.display === "block" || iframe.style.display === "") {
-            iframe.style.display = "none";
+        } else if (grandParentDiv.style.display === "block" || grandParentDiv.style.display === "") {
+            grandParentDiv.style.display = "none";
             player.stopVideo();
         }
     }
@@ -93,17 +75,23 @@ firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 // after the API code downloads.
 var player;
 var dataYT;
-
+//Method called once the iframe API finish loading.
+//referencing the example codes from https://developers.google.com/youtube/iframe_api_reference
 function onYouTubeIframeAPIReady() {
+    if (currentID === null){
+        currentID = "blah";
+    }
+    //The videoId is the id of the video wanted
     player = new YT.Player('player', {
-        height: "390",
-        width: "640",
-        videoId: 'M7lc1UVf-VE',
+        height: '390',
+        width: '640',
+        videoId: currentID,
         events: {
             'onReady': onPlayerReady,
-            'onStateChange': onPlayerStateChange,
+            'onStateChange': onPlayerStateChange
         }
     });
+    iframe = this.player.a;
 }
 
 // Create HTML element function
