@@ -23,71 +23,38 @@ window.addEventListener("message", function (event) {
         alertOfYouTubeIframeIsAttached=!alertOfYouTubeIframeIsAttached;
         return;
     }
-    //
+    //This is to set the iframe Resizing to sync
     if (event.data.type === "IframeResizing"){
-        chrome.storage.local.set({width: event.data.width, height: event.data.height}, function () {
-            if (chrome.runtime.lastError) {
-                localMemoryClear();
-                return;
-            } else {
-                
-            }
-        });
+       chromeLocalSet({width: event.data.width, height: event.data.height});
+       return;
     }
     
     //Checking for post messages from the html to content script specifically when html tab is visible.
     if (event.data.get !== undefined && event.data.get === "Video") {
-        
         //Posting back the current Video id and Current Time back to html script.
-        window.postMessage({videoId: currentVideoId, Time: currentTime, width:width, height:height}, "*")
+       videoStatePosting();
+        return;
     }
 
     //communication from html to content goes here and detecting youtube messages from youtube iframe API
     if (event.source !== window && event.origin === "https://www.youtube.com") {
         var json = JSON.parse(event.data);
-        
         //When first youtube Iframe video is initialized json.event would be intitialDevlivery.
         if (json.event === "initialDelivery") {
-            
             //When the iframe initializes then it access the local storage to find the current global videoId and time
-            chrome.storage.local.get(["time", "videoId","width","height"], function (result) {
-                if (chrome.runtime.lastError) {
-                    localMemoryClear();
-                    return;
-                }else {
-                    
-                    //posting messages of the videoid and current time to html after initialDelivery is received.
-                    window.postMessage({videoId: result.videoId, Time: result.time, width:result.width, height: result.height}, "*");
-                }
-            });
-            return;
+           videoStatePosting();
+           return
         }
-
-
         //Detection of event consist of currentTime, such that it contains the current play time of the video.
         if (json.info.currentTime !== undefined && json.info.currentTime > 1) {
             
             //This allow the use of chrome local storage that sets a key "time" and value of the event currentTime.
-            chrome.storage.local.set({time: json.info.currentTime}, function () {
-                if (chrome.runtime.lastError) {
-                    localMemoryClear();
-                    return;
-                } else {
-                    
-                }
-            });
+            chromeLocalSet({time: json.info.currentTime});
             if (json.info.videoData.video_id !== undefined && json.info.videoData.video_id !== null ) {
-                
-                
+
                 //This allow the use of chrome local storage that sets a key "videoId" and value of the event currentTime.
-                chrome.storage.local.set({videoId: json.info.videoData.video_id}, function () {
-                    if (chrome.runtime.lastError) {
-                        localMemoryClear();
-                        return;
-                    } else {
-                        
-                    }
-                })
+                chromeLocalSet({videoId: json.info.videoData.video_id});
+                return;
             }
         }
         window.postMessage({name:"From content"}, "*");
@@ -135,4 +102,27 @@ function localMemoryClear() {
     chrome.storage.local.clear(function () {
         
     });
+}
+
+function videoStatePosting(){
+    chrome.storage.local.get(["time", "videoId","width","height"], function (result) {
+        if (chrome.runtime.lastError) {
+            localMemoryClear();
+            return;
+        }else {
+            //posting messages of the videoid and current time to html after message is received.
+            window.postMessage({videoId: result.videoId, Time: result.time, width:result.width, height: result.height}, "*");
+        }
+    });
+}
+
+function chromeLocalSet(json) {
+    chrome.storage.local.set(json, function () {
+        if (chrome.runtime.lastError) {
+            localMemoryClear();
+            return;
+        } else {
+
+        }
+    })
 }
