@@ -361,7 +361,6 @@ function dragElement(elmnt) {
         // set the element's new position:
         elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
         elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
-console.log(elmnt.style.top)
     }
 
     function closeDragElement() {
@@ -369,7 +368,7 @@ console.log(elmnt.style.top)
         document.onmouseup = null;
         document.onmousemove = null;
         console.log(elmnt.getBoundingClientRect().top);
-
+        //This is to post message to content to snyc the dragging positions.
         window.postMessage({type: "IframeDragging", top:elmnt.getBoundingClientRect().top , left: elmnt.getBoundingClientRect().left}, "*");
     }
 }
