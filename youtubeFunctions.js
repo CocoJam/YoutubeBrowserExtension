@@ -66,7 +66,10 @@ window.addEventListener("message", function (event) {
         console.log(event.data);
         player.loadVideoById(event.data.videoId, event.data.Time);
         // player.setSize(event.data.width, event.data.height);
+        grandParentDiv.style.top = event.data.top + "px";
+        grandParentDiv.style.left = event.data.left + "px";
         Resizing(event.data.width, event.data.height);
+
         return
     }
     //The display function to hide or display the youtube iframe depending one the style of the iframe.
@@ -357,12 +360,16 @@ function dragElement(elmnt) {
         // set the element's new position:
         elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
         elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+console.log(elmnt.style.top)
     }
 
     function closeDragElement() {
         /* stop moving when mouse button is released:*/
         document.onmouseup = null;
         document.onmousemove = null;
+        console.log(elmnt.getBoundingClientRect().top);
+
+        window.postMessage({type: "IframeDragging", top:elmnt.getBoundingClientRect().top , left: elmnt.getBoundingClientRect().left}, "*");
     }
 }
 

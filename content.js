@@ -16,12 +16,17 @@ window.addEventListener("message", function (event) {
         document.body.appendChild(youtubeStandard);
         alertOfYouTubeIframeIsAttached = !alertOfYouTubeIframeIsAttached;
         window.postMessage({type: "triggerOnYouTubeIframeAPIReady"},"*")
+        return;
     }
     //This will alert the user that the youtube Iframe API is not attached
     if (!alertOfYouTubeIframeIsAttached){
         alert("youtube!!!");
         alertOfYouTubeIframeIsAttached=!alertOfYouTubeIframeIsAttached;
         return;
+    }
+    //This is to set the iframe Dragging to sync
+    if (event.data.type === "IframeDragging"){
+        chromeLocalSet({top: event.data.top, left: event.data.left});
     }
     //This is to set the iframe Resizing to sync
     if (event.data.type === "IframeResizing"){
@@ -105,13 +110,13 @@ function localMemoryClear() {
 }
 
 function videoStatePosting(){
-    chrome.storage.local.get(["time", "videoId","width","height"], function (result) {
+    chrome.storage.local.get(["time", "videoId","width","height","top","left"], function (result) {
         if (chrome.runtime.lastError) {
             localMemoryClear();
             return;
         }else {
             //posting messages of the videoid and current time to html after message is received.
-            window.postMessage({videoId: result.videoId, Time: result.time, width:result.width, height: result.height}, "*");
+            window.postMessage({videoId: result.videoId, Time: result.time, width:result.width, height: result.height, top: result.top, left: result.left}, "*");
         }
     });
 }
