@@ -1,10 +1,10 @@
 // var scurityPolictViolation = true;
 // document.addEventListener("securitypolicyviolation", function(e) {
-//     console.log("security Check == true");
+//     
 //     scurityPolictViolation = false;
-//     console.log(e.blockedURI);
-//     console.log(e.violatedDirective);
-//     console.log(e.originalPolicy);
+//     
+//     
+//     
 // });
 
 
@@ -15,7 +15,7 @@ var currentTime = 0;
 //Method called once the iframe API finish loading.
 //referencing the example codes from https://developers.google.com/youtube/iframe_api_reference
 function onYouTubeIframeAPIReady() {
-    console.log("ÏframeOnReadyEvent");
+    
     //The videoId is the id of the video wanted
     player = new YT.Player('player', {
         height: '390',
@@ -27,7 +27,7 @@ function onYouTubeIframeAPIReady() {
         }
     });
     iframe = this.player.a;
-    console.log("INIT TAB")
+    
 }
 
 //event emits when video is ready to be play after loaded
@@ -49,7 +49,7 @@ function stopVideo() {
 
 //detect visibility of the tab, which listens to current tab's visibility change and allow interaction with it.
 document.addEventListener("visibilitychange", function (event) {
-    console.log(document.visibilityState);
+    
     if (document.visibilityState === "hidden") {
         stopVideo();
     }
@@ -63,10 +63,13 @@ window.addEventListener("message", function (event) {
     //This detect the message source is from windows, which is likely to be it is from the content script.
     //To receive the message event from content script and detect the data.videoId for changing the videoId when init.
     if (event.source === window && event.data.videoId !== undefined) {
-        console.log(event);
+        
         currentID = event.data.videoId;
         currentTime = event.data.Time;
+        console.log(event.data);
         player.loadVideoById(event.data.videoId, event.data.Time);
+        // player.setSize(event.data.width, event.data.height);
+        Resizing(event.data.width, event.data.height);
         return
     }
     //The display function to hide or display the youtube iframe depending one the style of the iframe.
@@ -274,9 +277,14 @@ function initResize(e) {
 // Resize the parentDiv's size
 // Then the iFrame's size is adjusted accordingly
 function Resize(e) {
+    var iframeSize = Resizing(e.clientX, e.clientY);
+    //This posts the message to the content script to be up dated
+    window.postMessage({type: "IframeResizing", width: iframeSize.width, height: iframeSize.height}, "*");
+}
 
-    var newWidth = e.clientX - parentDiv.offsetLeft;
-    var newHeight = e.clientY - parentDiv.offsetTop;
+function Resizing(width,height){
+    var newWidth = width - parentDiv.offsetLeft;
+    var newHeight = height - parentDiv.offsetTop;
 
     parentDiv.style.width = newWidth + 'px';
     parentDiv.style.height = newHeight + 'px';
@@ -294,7 +302,9 @@ function Resize(e) {
 
     grandParentDiv.style.width = parentDiv.offsetWidth + 20 + 'px';
     grandParentDiv.style.height = parentDiv.offsetHeight + searchBar.offsetHeight + searchResults.offsetHeight + 20 + 'px';
-
+    console.log(parentDiv.offsetHeight + searchBar.offsetHeight + searchResults.offsetHeight + 20);
+    console.log(parentDiv.offsetWidth + 20 );
+    return {height: parentDiv.offsetHeight + searchBar.offsetHeight + searchResults.offsetHeight + 20, width:parentDiv.offsetWidth + 20 }
 }
 function stopResize(e) {
     window.removeEventListener('mousemove', Resize, false);
