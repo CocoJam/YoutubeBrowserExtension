@@ -46,12 +46,12 @@ window.addEventListener("message", function (event) {
            return
         }
         //Detection of event consist of currentTime, such that it contains the current play time of the video.
-        if (json.info.currentTime !== undefined && json.info.currentTime > 1) {
+        if (json.info !==null && json.info.currentTime !== undefined && json.info.currenTime !== null && json.info.currentTime > 1) {
             
             //This allow the use of chrome local storage that sets a key "time" and value of the event currentTime.
             chromeLocalSet({time: json.info.currentTime});
-            if (json.info.videoData.video_id !== undefined && json.info.videoData.video_id !== null ) {
-
+            if (json.info.videoData !== undefined && json.info.videoData.video_id !== undefined && json.info.videoData.video_id !== null ) {
+                console.log(json.info.videoData.video_id);
                 //This allow the use of chrome local storage that sets a key "videoId" and value of the event currentTime.
                 chromeLocalSet({videoId: json.info.videoData.video_id});
                 return;
