@@ -18,15 +18,10 @@ window.addEventListener("message", function (event) {
         window.postMessage({type: "triggerOnYouTubeIframeAPIReady"},"*")
         return;
     }
-    //This will alert the user that the youtube Iframe API is not attached
-    if (!alertOfYouTubeIframeIsAttached){
-        alert("youtube!!!");
-        alertOfYouTubeIframeIsAttached=!alertOfYouTubeIframeIsAttached;
-        return;
-    }
     //This is to set the iframe Dragging to sync
     if (event.data.type === "IframeDragging"){
         chromeLocalSet({top: event.data.top, left: event.data.left});
+        return
     }
     //This is to set the iframe Resizing to sync
     if (event.data.type === "IframeResizing"){
@@ -63,7 +58,14 @@ window.addEventListener("message", function (event) {
             }
         }
         window.postMessage({name:"From content"}, "*");
+        return
     }
+    //This will alert the user that the youtube Iframe API is not attached
+    // if (!alertOfYouTubeIframeIsAttached){
+    //     alert("youtube!!!");
+    //     alertOfYouTubeIframeIsAttached=true;
+    //     return;
+    // }
 },false);
 //Attaching the port with the browser runtime connection allowing the communication between the content and background.
 var myPort = browser.runtime.connect();

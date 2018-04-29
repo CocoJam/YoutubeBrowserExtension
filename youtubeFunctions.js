@@ -52,6 +52,8 @@ window.addEventListener("message", function (event) {
         grandParentDiv.style.top = event.data.top + "px";
         grandParentDiv.style.left = event.data.left + "px";
         Resizing(event.data.width, event.data.height);
+        // searchBar.style.display = "none";
+        // searchBar.style.display = "block";
         return
     }
     //The display function to hide or display the youtube iframe depending one the style of the iframe.
