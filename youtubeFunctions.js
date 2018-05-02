@@ -165,6 +165,9 @@ function searchVideo() {
 
         // Display the search results
         function (data) {
+            //Message the content script
+            console.log(document.getElementById("query").value);
+            window.postMessage({type: "searchQuery", search: document.getElementById("query").value}, "*");
 
             // Clear the previous search results
             while (searchResults.hasChildNodes()) {
