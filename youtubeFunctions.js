@@ -165,9 +165,6 @@ function searchVideo() {
 
         // Display the search results
         function (data) {
-        //Message the content script
-            console.log(document.getElementById("query").value);
-            window.postMessage({type: "searchQuery", search: document.getElementById("query").value}, "*");
 
             // Clear the previous search results
             while (searchResults.hasChildNodes()) {
@@ -328,7 +325,6 @@ document.getElementById("grandParentDiv").onmouseover = function (ev) {
     document.getElementById("searchResults").style.display = "";
     document.getElementById("resizer").style.display="";
 };
-
 
 //Make the grandParentDiv draggable
 dragElement(grandParentDiv);
