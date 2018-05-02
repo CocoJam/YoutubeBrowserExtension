@@ -320,14 +320,13 @@ function stopResize(e) {
 }
 
 //Hover the video to see the search bar
-document.getElementById("searchBar").style.display = "none";
-document.getElementById("searchResults").style.display = "none";
-document.getElementById("resizer").style.display="none";
-document.getElementById("grandParentDiv").onmouseover = function (ev) {
-    document.getElementById("searchBar").style.display = "";
-    document.getElementById("searchResults").style.display = "";
-    document.getElementById("resizer").style.display="";
-};
+    document.getElementById("grandParentDiv").onmouseover = function (ev) {
+        console.log("display");
+        document.getElementById("searchBar").style.display = "";
+        document.getElementById("searchResults").style.display = "";
+        document.getElementById("resizer").style.display="";
+    };
+
 
 //Make the grandParentDiv draggable
 dragElement(grandParentDiv);
@@ -385,3 +384,8 @@ query.addEventListener("keyup", function (event) {
     }
 });
 onYouTubeIframeAPIReady();
+//hide the elements on loaded.
+(function(){
+document.getElementById("searchBar").style.display = "none";
+document.getElementById("searchResults").style.display = "none";
+document.getElementById("resizer").style.display="none";})
