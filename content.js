@@ -28,7 +28,13 @@ window.addEventListener("message", function (event) {
        chromeLocalSet({width: event.data.width, height: event.data.height});
        return;
     }
-    
+    //This is to set the Search query
+    if (event.data.type ==="searchQuery"){
+        console.log(event.data.search);
+        chromeLocalSet({search: event.data.search});
+        return;
+    }
+
     //Checking for post messages from the html to content script specifically when html tab is visible.
     if (event.data.get !== undefined && event.data.get === "Video") {
         //Posting back the current Video id and Current Time back to html script.
@@ -86,7 +92,7 @@ chrome.storage.onChanged.addListener(function (changes, namespace) {
     for (key in changes) {
         var storageChange = changes[key];
         //Detecting the storage changes in terms of the old value/state, while also acessing the new value coming in.
-        
+        console.log(storageChange.newValue);
         if (key === "videoId") {
             currentVideoId = storageChange.newValue;
         }
@@ -112,13 +118,13 @@ function localMemoryClear() {
 }
 
 function videoStatePosting(){
-    chrome.storage.local.get(["time", "videoId","width","height","top","left"], function (result) {
+    chrome.storage.local.get(["time", "videoId","width","height","top","left","search"], function (result) {
         if (chrome.runtime.lastError) {
             localMemoryClear();
             return;
         }else {
             //posting messages of the videoid and current time to html after message is received.
-            window.postMessage({videoId: result.videoId, Time: result.time, width:result.width, height: result.height, top: result.top, left: result.left}, "*");
+            window.postMessage({videoId: result.videoId, Time: result.time, width:result.width, height: result.height, top: result.top, left: result.left, search:result.search}, "*");
         }
     });
 }

@@ -31,6 +31,12 @@ function stopVideo() {
 //detect visibility of the tab, which listens to current tab's visibility change and allow interaction with it.
 document.addEventListener("visibilitychange", function (event) {
     if (document.visibilityState === "hidden") {
+        //Removing the on mouseLeave event listener when leaving the page.
+        document.getElementById("grandParentDiv").removeEventListener("mouseleave",function (ev) {  });
+        //View display reset to show the display in order to be repainted by the web browser.
+        document.getElementById("searchBar").style.display = "";
+        document.getElementById("searchResults").style.display = "";
+        document.getElementById("resizer").style.display="";
         stopVideo();
     }
     if (document.visibilityState === "visible") {
@@ -52,6 +58,14 @@ window.addEventListener("message", function (event) {
         grandParentDiv.style.top = event.data.top + "px";
         grandParentDiv.style.left = event.data.left + "px";
         Resizing(event.data.width, event.data.height);
+        document.getElementById("query").value = event.data.search;
+        searchVideo();
+        //Reattach the onmouseleave listener for the hover effect.
+        document.getElementById("grandParentDiv").onmouseleave = function (ev) {
+            document.getElementById("searchBar").style.display = "none";
+            document.getElementById("searchResults").style.display = "none";
+            document.getElementById("resizer").style.display="none";
+        };
         // searchBar.style.display = "none";
         // searchBar.style.display = "block";
         return
@@ -151,6 +165,9 @@ function searchVideo() {
 
         // Display the search results
         function (data) {
+        //Message the content script
+            console.log(document.getElementById("query").value);
+            window.postMessage({type: "searchQuery", search: document.getElementById("query").value}, "*");
 
             // Clear the previous search results
             while (searchResults.hasChildNodes()) {
@@ -303,20 +320,15 @@ function stopResize(e) {
 }
 
 //Hover the video to see the search bar
-$(document).ready(function() {
-    $("#searchBar").hide();
-    $("#searchResults").hide();
+document.getElementById("searchBar").style.display = "none";
+document.getElementById("searchResults").style.display = "none";
+document.getElementById("resizer").style.display="none";
+document.getElementById("grandParentDiv").onmouseover = function (ev) {
+    document.getElementById("searchBar").style.display = "";
+    document.getElementById("searchResults").style.display = "";
+    document.getElementById("resizer").style.display="";
+};
 
-    $("#grandParentDiv").hover( function() {
-        $("#searchBar").toggle();
-        $("#searchResults").toggle();
-    });
-
-    $("#resizer").hide();
-    $("#grandParentDiv").hover(function () {
-        $("#resizer").toggle();
-    })
-});
 
 //Make the grandParentDiv draggable
 dragElement(grandParentDiv);
