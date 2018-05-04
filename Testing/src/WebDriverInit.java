@@ -31,6 +31,12 @@ public class WebDriverInit {
         driver = new ChromeDriver(capabilities);
     }
 
+    public void searchAndView(String s,int n) throws InterruptedException {
+        syncSearch(s);
+        List<WebElement> resultBox = driver.findElements(By.id("thumbnailContainer"));
+        resultBox.get(n).click();
+    }
+
     public List<String> searchQueryTitle(String s) throws InterruptedException {
         List<String> title = new ArrayList<>();
         syncSearch(s);
@@ -56,7 +62,7 @@ public class WebDriverInit {
         return title;
     }
 
-    private void syncSearch(String s) throws InterruptedException {
+    public void syncSearch(String s) throws InterruptedException {
         driver.get("http://www.google.com/xhtml");
         WebElement searchBox = driver.findElement(By.name("q"));
         WebElement youtubeSearchBox = driver.findElement(By.id("query"));
@@ -81,7 +87,7 @@ public class WebDriverInit {
 
     public static void main(String[] args) throws InterruptedException {
         WebDriverInit webDriverInit = new WebDriverInit();
-//        webDriverInit.Resizing(100,200);
+        webDriverInit.searchAndView("Hello",2);
 
     }
 }
