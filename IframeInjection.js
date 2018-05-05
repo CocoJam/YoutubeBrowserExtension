@@ -1,3 +1,10 @@
+var scurityPolictViolation = true;
+document.addEventListener("securitypolicyviolation", function(e) {
+    if (scurityPolictViolation){
+    window.postMessage({type:"CSPError"},"*");
+    scurityPolictViolation = false;
+    }
+});
 //This method is referenced to StackOverFlow titled Insert code into the page context using a content script
 //source: https://stackoverflow.com/questions/9515704/insert-code-into-the-page-context-using-a-content-script
 //Forming a script to ready to be filled in and injection
@@ -47,7 +54,7 @@ var insertion = "(" + function () {
     scriptinjections("https://code.jquery.com/ui/1.12.1/jquery-ui.js");
     scriptinjections("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.js");
 
-
+    console.log("HEllo there");
 } + ")()";
 
 script.textContent = insertion;
@@ -63,16 +70,18 @@ var customCSSRef = chrome.extension.getURL("./playerCss.css");
 console.log(customCSSRef);
 //Sending a local GET request as fetch to get the content of css Script, based on the css scripts given URL.
 //More info of Fetch API please reference MDN Fetch API documentations and Promises documentation to understand following code.
+console.log(scurityPolictViolation)
 fetch(customCSSRef).then(function (value) {
     console.log(value);
     //Parsing the resolved promise into text, which should be content of css script then return to the next chained promise function.
     return value.text();
 }).then(function (value) {
     //After parsing the value from resolved promise, then generate style tag, then attach the parsed text (css content) into the style tag then attach the style tag within the header.
-    var cssScript = document.createElement("style");
-    cssScript.textContent = value;
-    console.log(cssScript);
-    document.getElementsByTagName("head")[0].appendChild(cssScript);
+    // var cssScript = document.createElement("style");
+    // cssScript.textContent = value;
+    // console.log(cssScript);
+    window.postMessage({type:"Css",css:value},"*");
+    // document.getElementsByTagName("head")[0].appendChild(cssScript);
 }).catch(function (reason) {
     //Catching any errors or rejected promises in order to debug, which could be caused by parsing error or rejected promises.
     console.log(reason);
@@ -82,5 +91,5 @@ fetch(customCSSRef).then(function (value) {
 // document.getElementsByTagName("head")[0].appendChild(customCss);
 
 var youtubeStandard = document.createElement("script");
-youtubeStandard.src = chrome.extension.getURL("youtubeIframeTrigger.js");
+youtubeStandard.src = chrome.extension.getURL("youtubeFunctions.js");
 document.body.appendChild(youtubeStandard);

@@ -5,7 +5,7 @@ var currentTime = 0;
 var iframe = null;
 var youtubePLayerState = 0;
 var ispause = false;
-
+var CSPError = false;
 //event emits when video is ready to be play after loaded
 function onPlayerReady(event) {
     event.target.playVideo();
@@ -55,6 +55,28 @@ document.addEventListener("visibilitychange", function (event) {
 });
 //Messaging function between html and content script.
 window.addEventListener("message", function (event) {
+    if (CSPError){
+        return;
+    }
+
+    if(event.source === window && event.data.type === "CSPError"){
+        alert("CSP Error");
+        console.log("CSP");
+        CSPError = true;
+        document.getElementById("grandParentDiv").remove();
+        return;
+    }
+
+    if(event.source === window && event.data.type === "Css"){
+        console.log(event.data.css);
+        var cssScript = document.createElement("style");
+        cssScript.textContent = event.data.css;
+        console.log(cssScript);
+        document.getElementsByTagName("head")[0].appendChild(cssScript);
+        return;
+    }
+
+
     if(event.source === window && event.data.type === "search"){
         console.log(event.data);
         document.getElementById("query").value = event.data.search;
@@ -172,6 +194,7 @@ function createElement(tag, id) {
     return element;
 }
 
+console.log("DIVing");
 // Create grandParenetDiv and parentDiv
 var grandParentDiv = createElement('div', 'grandParentDiv');
 document.body.appendChild(grandParentDiv);
@@ -440,7 +463,7 @@ query.addEventListener("keyup", function (event) {
         searchButton.click();
     }
 });
-onYouTubeIframeAPIReady();
+// onYouTubeIframeAPIReady();
 //hide the elements on loaded.
 (function(){
 document.getElementById("searchBar").style.display = "none";
