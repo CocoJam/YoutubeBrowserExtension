@@ -15,6 +15,7 @@ public class youtubeDriver {
     WebDriver driver;
 
     public youtubeDriver() {
+        System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
         driver = new ChromeDriver();
         driver.get("https://www.youtube.com/");
     }
@@ -60,7 +61,6 @@ public class youtubeDriver {
                 }
                 if (matcher.find()) {
                     vId = matcher.group(1);
-                    System.out.println(vId);
                     s.add(vId);
                 }
             }
@@ -71,7 +71,7 @@ public class youtubeDriver {
     public static void main(String[] args) {
         youtubeDriver youtubeDriver = new youtubeDriver();
 
-        for (String element : youtubeDriver.checkTitle("Hello")) {
+        for (String element : youtubeDriver.checkThumb("Hello")) {
             System.out.println(element);
         }
 

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class tabsSwitch {
     webDriverInit webDriverInit = new webDriverInit();
     WebDriver driver = webDriverInit.driver;
-    public void createNewTab(String s) throws AWTException, InterruptedException {
+    public void createNewTab(String s) throws AWTException {
         //https://sqa.stackexchange.com/questions/24682/how-to-open-new-tab-in-browser-in-selenium-3-0
         webDriverInit.syncSearch(s);
         Robot robot = new Robot();

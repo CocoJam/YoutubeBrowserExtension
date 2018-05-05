@@ -29,7 +29,7 @@ public class webDriverInit {
         options.addArguments("load-extension=" + file.getAbsoluteFile());
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability(ChromeOptions.CAPABILITY, options);
-        System.setProperty("webdriver.chrome.driver", "chromedriver");
+        System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
         driver = new ChromeDriver(capabilities);
     }
 
