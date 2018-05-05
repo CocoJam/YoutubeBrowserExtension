@@ -21,7 +21,7 @@ function onPlayerReady(event) {
 
 //detect youtube iframe video state change.
 function onPlayerStateChange(event) {
-
+console.log(event);
 }
 
 function stopVideo() {
@@ -46,30 +46,53 @@ document.addEventListener("visibilitychange", function (event) {
 });
 //Messaging function between html and content script.
 window.addEventListener("message", function (event) {
+    if (event.source === window && event.data.type ==="videoId"){
+        console.log(event);
+        currentVideoId = event.data.videoId;
+        player.loadVideoById(currentVideoId);
+    }
+
+    if(event.source === window && event.data.type === "time"){
+        console.log(event);
+        // player.seekTo(event.data.time,true);
+    }
+
+    if(event.source === window && event.data.type === "size" ){
+        console.log(event.data);
+        Resizing(event.data.size.width, event.data.size.height);
+        return;
+    }
+
+    if (event.source === window && event.data.type === "location"){
+        console.log(event.data);
+        grandParentDiv.style.top = event.data.location.top;
+        grandParentDiv.style.left = event.data.location.left;
+        return;
+    }
     //This detect the message source is from windows, which is likely to be it is from the content script.
     //To receive the message event from content script and detect the data.videoId for changing the videoId when init.
-    if (event.source === window && event.data.videoId !== undefined) {
-        
-        currentID = event.data.videoId;
-        currentTime = event.data.Time;
-        console.log(event.data);
-        player.loadVideoById(event.data.videoId, event.data.Time);
-        // player.setSize(event.data.width, event.data.height);
-        grandParentDiv.style.top = event.data.top + "px";
-        grandParentDiv.style.left = event.data.left + "px";
-        Resizing(event.data.width, event.data.height);
-        document.getElementById("query").value = event.data.search;
-        searchVideo();
-        //Reattach the onmouseleave listener for the hover effect.
-        document.getElementById("grandParentDiv").onmouseleave = function (ev) {
-            document.getElementById("searchBar").style.display = "none";
-            document.getElementById("searchResults").style.display = "none";
-            document.getElementById("resizer").style.display="none";
-        };
-        // searchBar.style.display = "none";
-        // searchBar.style.display = "block";
-        return
-    }
+    // if (event.source === window && event.data.videoId !== undefined) {
+    //
+    //     currentID = event.data.videoId;
+    //     currentTime = event.data.Time;
+    //     console.log(event.data);
+    //     player.loadVideoById(event.data.videoId, event.data.Time);
+    //     // player.setSize(event.data.width, event.data.height);
+    //     grandParentDiv.style.top = event.data.top + "px";
+    //     grandParentDiv.style.left = event.data.left + "px";
+    //     Resizing(event.data.width, event.data.height);
+    //     document.getElementById("query").value = event.data.search;
+    //     searchVideo();
+    //     //Reattach the onmouseleave listener for the hover effect.
+    //     document.getElementById("grandParentDiv").onmouseleave = function (ev) {
+    //         document.getElementById("searchBar").style.display = "none";
+    //         document.getElementById("searchResults").style.display = "none";
+    //         document.getElementById("resizer").style.display="none";
+    //     };
+    //     // searchBar.style.display = "none";
+    //     // searchBar.style.display = "block";
+    //     return
+    // }
     //The display function to hide or display the youtube iframe depending one the style of the iframe.
     if (event.source === window && event.data.type === "disableVideo") {
         if (grandParentDiv.style.display === "none") {
@@ -247,6 +270,7 @@ function searchVideo() {
                 //Users are able to play the videos of their choice
                 function chooseVideo(){
                     player.loadVideoById(data.id.videoId);
+                    window.postMessage({videoId:data.id.videoId});
                 };
                 thumbnail.addEventListener("click", chooseVideo);
 
@@ -369,7 +393,7 @@ function dragElement(elmnt) {
         document.onmousemove = null;
         console.log(elmnt.getBoundingClientRect().top);
         //This is to post message to content to snyc the dragging positions.
-        window.postMessage({type: "IframeDragging", top:elmnt.getBoundingClientRect().top , left: elmnt.getBoundingClientRect().left}, "*");
+        window.postMessage({type: "IframeDragging", top:elmnt.style.top , left: elmnt.style.left}, "*");
     }
 }
 

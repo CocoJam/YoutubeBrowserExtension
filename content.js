@@ -7,6 +7,7 @@ var alertOfYouTubeIframeIsAttached = false;
 var width=0;
 var height=0;
 window.addEventListener("message", function (event) {
+    // console.log(event);
     //This will recieve a message from the youtubeIframeTrigger.js when the youtube IFrame API did and finsihed loading
     //Then apply the attachment of the actually functionality of the youtubeFunction.js.
     if (event.data.type === "ÏframeOnReadyEvent"){
@@ -20,12 +21,12 @@ window.addEventListener("message", function (event) {
     }
     //This is to set the iframe Dragging to sync
     if (event.data.type === "IframeDragging"){
-        chromeLocalSet({top: event.data.top, left: event.data.left});
+        chromeLocalSet({location:{top: event.data.top, left: event.data.left}});
         return
     }
     //This is to set the iframe Resizing to sync
     if (event.data.type === "IframeResizing"){
-       chromeLocalSet({width: event.data.width, height: event.data.height});
+       chromeLocalSet({size: {width:event.data.width, height:event.data.height}});
        return;
     }
     //This is to set the Search query
@@ -39,6 +40,9 @@ window.addEventListener("message", function (event) {
         //Posting back the current Video id and Current Time back to html script.
        videoStatePosting();
         return;
+    }
+    if(event.data.type === "videoId"){
+
     }
 
     //communication from html to content goes here and detecting youtube messages from youtube iframe API
@@ -91,19 +95,25 @@ chrome.storage.onChanged.addListener(function (changes, namespace) {
     for (key in changes) {
         var storageChange = changes[key];
         //Detecting the storage changes in terms of the old value/state, while also acessing the new value coming in.
-        
+        var json = {};
+        // window.postMessage({videoId: result.videoId, Time: result.time, width:result.width, height: result.height, top: result.top, left: result.left, search:result.search}, "*");
         if (key === "videoId") {
-            currentVideoId = storageChange.newValue;
+            json.videoId = storageChange.newValue;
+            json.type = "videoId";
         }
         if (key === "time") {
-            currentTime = storageChange.newValue;
+            json.Time = storageChange.newValue;
+            json.type = "time";
         }
-        if (key === "width"){
-            width = storageChange.newValue;
+        if (key === "size"){
+            json.size = storageChange.newValue;
+            json.type = "size";
         }
-        if (key ==="height"){
-            height = storageChange.newValue;
+        if(key ==="location"){
+            json.location = storageChange.newValue;
+            json.type = "location";
         }
+        window.postMessage(json, "*");
     }
 });
 
@@ -117,13 +127,13 @@ function localMemoryClear() {
 }
 
 function videoStatePosting(){
-    chrome.storage.local.get(["time", "videoId","width","height","top","left","search"], function (result) {
+    chrome.storage.local.get(["time", "videoId","size","top","left","search"], function (result) {
         if (chrome.runtime.lastError) {
             localMemoryClear();
             return;
         }else {
             //posting messages of the videoid and current time to html after message is received.
-            window.postMessage({videoId: result.videoId, Time: result.time, width:result.width, height: result.height, top: result.top, left: result.left, search:result.search}, "*");
+            // window.postMessage({videoId: result.videoId, Time: result.time, width:result.width, height: result.height, top: result.top, left: result.left, search:result.search}, "*");
         }
     });
 }
