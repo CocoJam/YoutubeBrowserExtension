@@ -41,5 +41,8 @@ public class TabsSwitch {
 
     public static void main(String[] args) throws AWTException, InterruptedException {
         TabsSwitch tabsSwitch = new TabsSwitch();
+        tabsSwitch.tabChangeCheck("Hello", "Bye");
+//        tabsSwitch.webDriverInit.searchAndView("You",2);
+//        tabsSwitch.webDriverInit.Resizing(100,200);
     }
 }
