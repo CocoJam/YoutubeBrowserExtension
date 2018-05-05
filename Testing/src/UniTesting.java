@@ -14,6 +14,7 @@ public class UniTesting {
         for (String s1 : train) {
            if (!test.contains(s1.trim())){
                System.out.println(s1);
+               Assert.fail();
            }
         }
         System.out.println(test.size());
