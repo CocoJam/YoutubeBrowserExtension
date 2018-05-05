@@ -9,7 +9,7 @@ public class tabsSwitch {
     WebDriver driver = webDriverInit.driver;
     public void createNewTab(String s) throws AWTException {
         //https://sqa.stackexchange.com/questions/24682/how-to-open-new-tab-in-browser-in-selenium-3-0
-        webDriverInit.syncSearch(s);
+//        webDriverInit.syncSearch(s);
         Robot robot = new Robot();
         robot.keyPress(KeyEvent.VK_CONTROL);
         robot.keyPress(KeyEvent.VK_T);
@@ -28,18 +28,24 @@ public class tabsSwitch {
         }
     }
 
-    public void tabChangeCheck(String s,String s1) throws InterruptedException, AWTException {
-        createNewTab(s);
+    public void tabChangeCheck(){
         ArrayList<String> newTab = new ArrayList<String>(driver.getWindowHandles());
         System.out.println(newTab.size());
         switchTabs(newTab.size()-1);
-        webDriverInit.syncSearch(s1);
+    }
+    public int tabNum (){
+        return  new ArrayList<String>(driver.getWindowHandles()).size();
+    }
+    public void checkCurrentTab(){
+        for (String s : driver.getWindowHandles()) {
+            System.out.println(s);
+        }
     }
 
     public static void main(String[] args) throws AWTException, InterruptedException {
         tabsSwitch tabsSwitch = new tabsSwitch();
-        tabsSwitch.tabChangeCheck("Hello", "Bye");
-//        tabsSwitch.webDriverInit.searchAndView("You",2);
-//        tabsSwitch.webDriverInit.Resizing(100,200);
+        tabsSwitch.createNewTab("Hello");
+//        tabsSwitch.switchTabs(0);
+//        tabsSwitch.tabChangeCheck();
     }
 }

@@ -13,6 +13,7 @@ public class uniTesting {
         youtubeDriver = new youtubeDriver();
     }
 
+
     @Test
     public void matchingTitles() throws InterruptedException {
         List<String> test = webDriverInit.searchQueryTitle(s);
@@ -39,7 +40,6 @@ public class uniTesting {
         }
         System.out.println(train.size());
         Assert.assertTrue(true);
-
     }
 
 

@@ -55,7 +55,6 @@ document.addEventListener("visibilitychange", function (event) {
 });
 //Messaging function between html and content script.
 window.addEventListener("message", function (event) {
-console.log(event)
     if(event.source === window && event.data.type === "search"){
         console.log(event.data);
         document.getElementById("query").value = event.data.search;
@@ -103,15 +102,17 @@ console.log(event)
     //To receive the message event from content script and detect the data.videoId for changing the videoId when init.
     if (event.source === window && event.data.type === "init") {
 
-        currentID = event.data.videoId;
-        currentTime = event.data.time;
+        currentID = event.data.videoId||"";
+        currentTime = event.data.time||0;
         console.log(event.data);
-        currentTime = event.data.time;
-        player.loadVideoById(event.data.videoId, event.data.time);
+
+        player.loadVideoById(currentID, currentTime);
         // player.setSize(event.data.width, event.data.height);
-        grandParentDiv.style.top = event.data.location.top;
-        grandParentDiv.style.left = event.data.location.left;
-        Resizing(event.data.size.width, event.data.size.height);
+        if (event.data.location !== undefined){
+        grandParentDiv.style.top = event.data.location.top||0;
+        grandParentDiv.style.left = event.data.location.left||0;}
+        if(event.data.size !== undefined){
+        Resizing(event.data.size.width||640, event.data.size.height||390);}
         document.getElementById("query").value = event.data.search;
         searchVideo();
         //Reattach the onmouseleave listener for the hover effect.

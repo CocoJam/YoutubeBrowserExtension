@@ -71,9 +71,12 @@ public class youtubeDriver {
     public static void main(String[] args) {
         youtubeDriver youtubeDriver = new youtubeDriver();
 
-        for (String element : youtubeDriver.checkThumb("Hello")) {
+        for (String element : youtubeDriver.checkTitle("Hello")) {
             System.out.println(element);
         }
+        webDriverInit webDriverInit =new webDriverInit();
+//        webDriverInit.syncSearch("Hello");
+        webDriverInit.searchQueryTitle("Hello");
 
     }
 }

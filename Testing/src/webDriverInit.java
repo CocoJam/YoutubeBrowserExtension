@@ -12,6 +12,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class webDriverInit {
     WebDriver driver;
@@ -33,20 +35,31 @@ public class webDriverInit {
         driver = new ChromeDriver(capabilities);
     }
 
-    public void searchAndView(String s, int n){
+    public String searchAndView(String s, int n){
         syncSearch(s);
         List<WebElement> resultBox = ListImplicitWait("thumbnailContainer");
         resultBox.get(n).click();
+        return getSearchAndViewVideoID(resultBox,n);
+    }
+
+    public String getSearchAndViewVideoID(List<WebElement> webElements, int n){
+
+        Pattern pattern = Pattern.compile("vi/(.+)/", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher( webElements.get(n).findElement(By.tagName("img")).getAttribute("src"));
+        if (matcher.find()) {
+          return matcher.group(1);
+        }
+       return "";
     }
 
     public WebElement implicitWait(String s){
-        WebDriverWait wait = new WebDriverWait(driver, 50);
+        WebDriverWait wait = new WebDriverWait(driver, 10);
         WebElement element= wait.until(ExpectedConditions.presenceOfElementLocated(By.id(s)));
         return element;
     }
 
     public List<WebElement> ListImplicitWait(String s){
-        WebDriverWait wait = new WebDriverWait(driver, 20);
+        WebDriverWait wait = new WebDriverWait(driver, 10);
        List<WebElement> element= wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.id(s)));
         return element;
     }
@@ -78,7 +91,6 @@ public class webDriverInit {
 
     public void syncSearch(String s) {
         driver.get("http://www.google.com/xhtml");
-        WebElement searchBox = driver.findElement(By.name("q"));
         WebElement youtubeSearchBox = implicitWait("query");
         youtubeSearchBox.sendKeys(s);
         youtubeSearchBox.sendKeys(Keys.ENTER);
@@ -86,20 +98,20 @@ public class webDriverInit {
 
     public void Dragging(int x, int y) {
         driver.get("http://www.google.com/xhtml");
-        WebElement youtubeSearchBox = driver.findElement(By.id("query"));
+        WebElement youtubeSearchBox =implicitWait("query");
         Actions action = new Actions(driver);
         action.clickAndHold(youtubeSearchBox).moveByOffset(x, y).release().build().perform();
     }
 
     public void Resizing(int x, int y){
         driver.get("http://www.google.com/xhtml");
-        WebElement youtubeSearchBox = implicitWait("resize");
+        WebElement youtubeSearchBox = implicitWait("resizer");
         Actions action = new Actions(driver);
         action.clickAndHold(youtubeSearchBox).moveByOffset(x, y).release().build().perform();
     }
 
     public String getCurrentVideoId() {
-        WebElement currentVideoId = getCurrentIframe();
+        WebElement currentVideoId = implicitWait("player");
         String VideoId = currentVideoId.getAttribute("src");
         System.out.println(VideoId);
         return VideoId;
@@ -117,16 +129,24 @@ public class webDriverInit {
         return height;
     }
 
+    public String getCurrentIframeTop() {
+        WebElement currentVideoId = getCurrentIframe();
+        String height = currentVideoId.getCssValue("top");
+        return height;
+    }
+    public String getCurrentIframeleft() {
+        WebElement currentVideoId = getCurrentIframe();
+        String height = currentVideoId.getCssValue("left");
+        return height;
+    }
+
     public WebElement getCurrentIframe() {
-        return implicitWait("player");
+        return implicitWait("grandParentDiv");
     }
 
     public static void main(String[] args){
         webDriverInit webDriverInit = new webDriverInit();
-        webDriverInit.searchQueryTitle("Bye");
-        youtubeDriver youtubeDriver = new youtubeDriver();
-        for (String element : youtubeDriver.checkTitle("Bye")) {
-            System.out.println(element);
-        }
+//        webDriverInit.driver.get("http://www.google.com/xhtml");
+        webDriverInit.Dragging(100,200);
     }
 }
