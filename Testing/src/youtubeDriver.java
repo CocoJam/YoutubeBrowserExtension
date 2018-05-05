@@ -19,7 +19,7 @@ public class youtubeDriver {
         driver.get("https://www.youtube.com/");
     }
 
-    public WebElement initalElement(String s) {
+    public WebElement initialElement(String s) {
         WebElement youtubeSearch = driver.findElement(By.id("search"));
         youtubeSearch.sendKeys(s);
         youtubeSearch.sendKeys(Keys.ENTER);
@@ -27,26 +27,26 @@ public class youtubeDriver {
     }
 
     public List<String> checkTitle(String s) {
-        initalElement(s);
+        initialElement(s);
         List<String> string = new ArrayList<>();
-        for (WebElement element : ListimplictWait("//*[@id=\"video-title\"]")) {
+        for (WebElement element : ListImplicitWait("//*[@id=\"video-title\"]")) {
             string.add(element.getText());
         }
         return string;
     }
 
-    public List<WebElement> ListimplictWait(String s) {
+    public List<WebElement> ListImplicitWait(String s) {
         WebDriverWait wait = new WebDriverWait(driver, 20);
         List<WebElement> element = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath(s)));
         return element;
     }
 
     public List<String> checkThumb(String s) {
-        initalElement(s);
-        return filteringThumbnails(ListimplictWait("//*[@id=\"img\"]"));
+        initialElement(s);
+        return filteringThumbnails(ListImplicitWait("//*[@id=\"img\"]"));
     }
 
-    public List<String> filteringThumbnails(List<WebElement> webElement) {
+    public static List<String> filteringThumbnails(List<WebElement> webElement) {
         List<String> s = new ArrayList<>();
         String vId = null;
         Pattern pattern = Pattern.compile("vi/(.+)/", Pattern.CASE_INSENSITIVE);

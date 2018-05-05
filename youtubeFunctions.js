@@ -1,13 +1,3 @@
-// var scurityPolictViolation = true;
-// document.addEventListener("securitypolicyviolation", function(e) {
-//     
-//     scurityPolictViolation = false;
-//     
-//     
-//     
-// });
-
-
 //variables that will be used to reference
 var player;
 var currentID = null;
@@ -347,6 +337,7 @@ function initResize(e) {
 
 // Resize the parentDiv's size
 // Then the iFrame's size is adjusted accordingly
+// Ref: Stackoverflow
 function Resize(e) {
     var iframeSize = Resizing(e.clientX, e.clientY);
 
@@ -393,6 +384,7 @@ function stopResize(e) {
 
 
 //Make the grandParentDiv draggable
+// Ref: w3school
 dragElement(grandParentDiv);
 
 function dragElement(elmnt) {
