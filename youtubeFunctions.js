@@ -480,5 +480,3 @@ query.addEventListener("keyup", function (event) {
         searchButton.click();
     }
 });
-// onYouTubeIframeAPIReady();
-//hide the elements on loaded.
