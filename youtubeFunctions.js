@@ -6,6 +6,8 @@ var iframe = null;
 var youtubePLayerState = 0;
 var ispause = false;
 var CSPError = false;
+var buffing = false;
+var pre_buffering_state = 0;
 //event emits when video is ready to be play after loaded
 function onPlayerReady(event) {
     event.target.playVideo();
@@ -13,21 +15,25 @@ function onPlayerReady(event) {
 
 //detect youtube iframe video state change.
 function onPlayerStateChange(event) {
-if (event.data === 2){
-    window.postMessage({type : "youtubeVideoState",youtubeVideoState: 2},"*");
-    ispause = false;
-}
-if(event.data ===1){
-    if (!ispause){
-        console.log(event.data);
-        player.seekTo(currentTime, true);
-        window.postMessage({type : "youtubeVideoState",youtubeVideoState: 1},"*");
-        ispause =true;
-        grandParentDiv.style.opacity = 1;
-        grandParentDiv.style.zIndex = 999;
-        parentDiv.style.zIndex = 999;
+    if(event.data ===1){
+        if (ispause){
+            player.seekTo(currentTime, true);
+            // player.loadVideoById(currentVideoId, currentTime);
+            window.postMessage({type : "youtubeVideoState",youtubeVideoState: 1},"*");
+            ispause =false;
+            grandParentDiv.style.opacity = 1;
+            grandParentDiv.style.zIndex = 999;
+            parentDiv.style.zIndex = 999;
+        }
     }
+
+if (event.data === 2 && pre_buffering_state === 1){
+    window.postMessage({type : "youtubeVideoState",youtubeVideoState: 2},"*");
+    ispause = true;
+    buffing = false;
 }
+
+    pre_buffering_state = event.data
 }
 
 function stopVideo() {
@@ -46,9 +52,9 @@ document.addEventListener("visibilitychange", function (event) {
         stopVideo();
     }
     if (document.visibilityState === "visible") {
-        console.log(youtubePLayerState);
+        
         //Posting message to the content script from html to notify content script that html tab is visible.
-        if (youtubePLayerState !== 2){
+        if (youtubePLayerState === 1){
         player.seekTo(currentTime, true);
         }
         // window.postMessage({type: "HTMLToContent", get: "Video"}, "*");
@@ -62,7 +68,7 @@ window.addEventListener("message", function (event) {
 
     if(event.source === window && event.data.type === "CSPError"){
         alert("CSP Error");
-        console.log("CSP");
+        
         CSPError = true;
         document.getElementById("grandParentDiv").remove();
         return;
@@ -70,7 +76,7 @@ window.addEventListener("message", function (event) {
 
     if (event.source === window && event.data.type ==="hidden"){
         grandParentDiv.style.opacity = 1;
-        console.log(event.data);
+        
         if(event.data.hidden){
             player.stopVideo();
             grandParentDiv.style.display = "none";
@@ -86,41 +92,40 @@ window.addEventListener("message", function (event) {
     }
 
     if(event.source === window && event.data.type === "search"){
-        console.log(event.data);
+        
         document.getElementById("query").value = event.data.search;
         searchVideo();
         return;
     }
 
     if(event.source === window && event.data.type ==="youtubeVideoState"){
-        console.log(event.data.youtubeVideoState);
             youtubePLayerState = event.data.youtubeVideoState;
             if (youtubePLayerState === 2){
-                // ispause =false;
+                ispause =true;
             }
             return;
     }
 
     if (event.source === window && event.data.type ==="videoId"){
-        console.log(event);
+        
         currentVideoId = event.data.videoId;
         player.loadVideoById(currentVideoId);
         player.stopVideo();
     }
 
     if(event.source === window && event.data.type === "time"){
-        console.log(event.data.time);
+        
         currentTime = event.data.time;
     }
 
     if(event.source === window && event.data.type === "size" ){
-        console.log(event.data);
+        
         Resizing(event.data.size.width, event.data.size.height);
         return;
     }
 
     if (event.source === window && event.data.type === "location"){
-        console.log(event.data);
+        
         grandParentDiv.style.top = event.data.location.top;
         grandParentDiv.style.left = event.data.location.left;
         return;
@@ -135,7 +140,7 @@ window.addEventListener("message", function (event) {
         }
         currentID = event.data.videoId||"";
         currentTime = event.data.time||0;
-        console.log(event.data);
+        
         player.loadVideoById(currentID, currentTime);
         if (event.data.youtubeVideoState === 2){
             player.stopVideo();
@@ -210,7 +215,7 @@ function createElement(tag, id) {
     return element;
 }
 
-console.log("DIVing");
+
 // Create grandParenetDiv and parentDiv
 var grandParentDiv = createElement('div', 'grandParentDiv');
 document.body.appendChild(grandParentDiv);
@@ -259,7 +264,7 @@ function searchVideo() {
         // Display the search results
         function (data) {
             //Message the content script
-            console.log(document.getElementById("query").value);
+            
             window.postMessage({type: "searchQuery", search: document.getElementById("query").value}, "*");
 
             // Clear the previous search results
@@ -403,8 +408,8 @@ function Resizing(width,height){
 
     grandParentDiv.style.width = parentDiv.offsetWidth + 20 + 'px';
     grandParentDiv.style.height = parentDiv.offsetHeight + searchBar.offsetHeight + searchResults.offsetHeight + 20 + 'px';
-    console.log(parentDiv.offsetHeight + searchBar.offsetHeight + searchResults.offsetHeight + 20);
-    console.log(parentDiv.offsetWidth + 20 );
+    
+    
     return {height: parentDiv.offsetHeight + searchBar.offsetHeight + searchResults.offsetHeight + 20, width:parentDiv.offsetWidth + 20 }
 }
 function stopResize(e) {
@@ -416,7 +421,7 @@ function stopResize(e) {
 
 //Hover the video to see the search bar
     document.getElementById("grandParentDiv").onmouseover = function (ev) {
-        console.log("display");
+        
         document.getElementById("searchBar").style.display = "";
         document.getElementById("searchResults").style.display = "";
         document.getElementById("resizer").style.display="";
@@ -463,7 +468,7 @@ function dragElement(elmnt) {
         /* stop moving when mouse button is released:*/
         document.onmouseup = null;
         document.onmousemove = null;
-        console.log(elmnt.getBoundingClientRect().top);
+        
         //This is to post message to content to snyc the dragging positions.
         window.postMessage({type: "IframeDragging", top:elmnt.style.top , left: elmnt.style.left}, "*");
     }

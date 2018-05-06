@@ -55,7 +55,7 @@ var insertion = "(" + function () {
     scriptinjections("https://code.jquery.com/ui/1.12.1/jquery-ui.js");
     scriptinjections("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.js");
 
-    console.log("HEllo there");
+    
 } + ")()";
 
 script.textContent = insertion;
@@ -63,7 +63,7 @@ script.textContent = insertion;
 (document.head || document.documentElement).appendChild(script);
 script.remove();
 //Logging for debugging purpose.
-console.log("Logging js injections");
+
 
 //injecting youtube Function scripts.
 var youtubeStandard = document.createElement("script");

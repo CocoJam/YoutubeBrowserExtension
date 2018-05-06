@@ -13,7 +13,7 @@ browser.browserAction.onClicked.addListener(handleClick);
 
 //Sense to button click of the window, then sending a message down to specific tab's content script.
 function handleClick(tab) {
-    console.log(tab);
+    
     hidden = !hidden;
     browser.tabs.sendMessage(tab.id, {hidden:hidden});
 }

@@ -8,7 +8,7 @@ var width=0;
 var height=0;
 
 window.addEventListener("message", function (event) {
-    // console.log(event);
+
     //This will recieve a message from the youtubeIframeTrigger.js when the youtube IFrame API did and finsihed loading
     //Then apply the attachment of the actually functionality of the youtubeFunction.js.
     if (event.data.type === "ÏframeOnReadyEvent"){
@@ -17,7 +17,7 @@ window.addEventListener("message", function (event) {
         youtubeStandard.src = chrome.extension.getURL("youtubeFunctions.js");
         document.body.appendChild(youtubeStandard);
         alertOfYouTubeIframeIsAttached = !alertOfYouTubeIframeIsAttached;
-        console.log("triggerOnYouTubeIframeAPIReady");
+
         window.postMessage({type: "triggerOnYouTubeIframeAPIReady"},"*");
         return;
     }
@@ -33,7 +33,7 @@ window.addEventListener("message", function (event) {
     }
     //This is to set the Search query
     if (event.data.type ==="searchQuery"){
-        console.log(event.data.search);
+
         chromeLocalSet({search: event.data.search});
         return;
     }
@@ -66,7 +66,7 @@ window.addEventListener("message", function (event) {
             //This allow the use of chrome local storage that sets a key "time" and value of the event currentTime.
             chromeLocalSet({time: json.info.currentTime});
             if (json.info.videoData !== undefined && json.info.videoData.video_id !== undefined && json.info.videoData.video_id !== null ) {
-                console.log(json.info.videoData.video_id);
+
                 //This allow the use of chrome local storage that sets a key "videoId" and value of the event currentTime.
                 chromeLocalSet({videoId: json.info.videoData.video_id});
                 return;
@@ -90,7 +90,6 @@ browser.runtime.onMessage.addListener(ReceivedMessage);
 
 //Background script to this specific content script with the specific tabID.
 function ReceivedMessage(request, sender, sendResponse) {
-    console.log(request);
      // hidden=String(!Boolean(hidden));
     chromeLocalSet({hidden:request.hidden});
     // window.postMessage({type:"disableVideo", hidden: hidden}, "*");
@@ -103,8 +102,6 @@ chrome.storage.onChanged.addListener(function (changes, namespace) {
         var storageChange = changes[key];
         //Detecting the storage changes in terms of the old value/state, while also acessing the new value coming in.
         var json = {};
-        console.log(key);
-        console.log(storageChange.newValue);
         if (key === "videoId") {
             json.videoId = storageChange.newValue;
             json.type = "videoId";
@@ -132,7 +129,6 @@ chrome.storage.onChanged.addListener(function (changes, namespace) {
         if (key === "hidden"){
             json.hidden = storageChange.newValue;
             json.type = "hidden";
-            console.log("hidden");
         }
         window.postMessage(json, "*");
     }
