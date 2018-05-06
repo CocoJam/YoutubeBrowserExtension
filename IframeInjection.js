@@ -12,10 +12,6 @@ document.addEventListener("securitypolicyviolation", function(e) {
 var script = document.createElement('script');
 //The content to inject into the given html
 var insertion = "(" + function () {
-//Dynamically inject div within the html which would be used to contain the Iframe of the youtube API.
-//     var div_container = document.createElement('div');
-//     div_container.id = "player";
-//     document.body.insertBefore(div_container, document.body.firstChild);
 
     function scriptinjections(source){
         //Creating another script that to contains JavaScript content.

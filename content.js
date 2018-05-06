@@ -9,18 +9,6 @@ var height=0;
 
 window.addEventListener("message", function (event) {
 
-    //This will recieve a message from the youtubeIframeTrigger.js when the youtube IFrame API did and finsihed loading
-    //Then apply the attachment of the actually functionality of the youtubeFunction.js.
-    if (event.data.type === "ÏframeOnReadyEvent"){
-        
-        var youtubeStandard = document.createElement("script");
-        youtubeStandard.src = chrome.extension.getURL("youtubeFunctions.js");
-        document.body.appendChild(youtubeStandard);
-        alertOfYouTubeIframeIsAttached = !alertOfYouTubeIframeIsAttached;
-
-        window.postMessage({type: "triggerOnYouTubeIframeAPIReady"},"*");
-        return;
-    }
     //This is to set the iframe Dragging to sync
     if (event.data.type === "IframeDragging"){
         chromeLocalSet({location:{top: event.data.top, left: event.data.left}});
@@ -75,12 +63,6 @@ window.addEventListener("message", function (event) {
         window.postMessage({name:"From content"}, "*");
         return
     }
-    //This will alert the user that the youtube Iframe API is not attached
-    // if (!alertOfYouTubeIframeIsAttached){
-    //     alert("youtube!!!");
-    //     alertOfYouTubeIframeIsAttached=true;
-    //     return;
-    // }
 },false);
 //Attaching the port with the browser runtime connection allowing the communication between the content and background.
 var myPort = browser.runtime.connect();

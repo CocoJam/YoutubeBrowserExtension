@@ -11,9 +11,8 @@ function connected(port) {
 //This handles the clicking actions from the browser as browser actions
 browser.browserAction.onClicked.addListener(handleClick);
 
-//Sense to button click of the window, then sending a message down to specific tab's content script.
+//Sense to button click of the window, then sending a message down to specific tab's content script. To toggle the hidden state
 function handleClick(tab) {
-    
     hidden = !hidden;
     browser.tabs.sendMessage(tab.id, {hidden:hidden});
 }

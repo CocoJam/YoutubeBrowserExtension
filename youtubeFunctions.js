@@ -6,14 +6,13 @@ var iframe = null;
 var youtubePLayerState = 0;
 var ispause = false;
 var CSPError = false;
-var buffing = false;
 var pre_buffering_state = 0;
 //event emits when video is ready to be play after loaded
 function onPlayerReady(event) {
     event.target.playVideo();
 }
 
-//detect youtube iframe video state change.
+//detect youtube iframe video state change. And snyc the player state.
 function onPlayerStateChange(event) {
     if(event.data ===1){
         if (ispause){
@@ -26,13 +25,11 @@ function onPlayerStateChange(event) {
             parentDiv.style.zIndex = 999;
         }
     }
-
+//Posting universal pauses
 if (event.data === 2 && pre_buffering_state === 1){
     window.postMessage({type : "youtubeVideoState",youtubeVideoState: 2},"*");
     ispause = true;
-    buffing = false;
-}
-
+    }
     pre_buffering_state = event.data
 }
 
@@ -53,27 +50,26 @@ document.addEventListener("visibilitychange", function (event) {
     }
     if (document.visibilityState === "visible") {
         
-        //Posting message to the content script from html to notify content script that html tab is visible.
+        //When visible check player state then play
         if (youtubePLayerState === 1){
         player.seekTo(currentTime, true);
         }
-        // window.postMessage({type: "HTMLToContent", get: "Video"}, "*");
     }
 });
 //Messaging function between html and content script.
 window.addEventListener("message", function (event) {
+    //CSP error alert once per html.
     if (CSPError){
         return;
     }
-
+    //This is the result of CSP valuations
     if(event.source === window && event.data.type === "CSPError"){
         alert("CSP Error");
-        
         CSPError = true;
         document.getElementById("grandParentDiv").remove();
         return;
     }
-
+    //State of hidden and non hidden state of the player
     if (event.source === window && event.data.type ==="hidden"){
         grandParentDiv.style.opacity = 1;
         
@@ -90,14 +86,14 @@ window.addEventListener("message", function (event) {
         }
         return;
     }
-
+    //Search results state
     if(event.source === window && event.data.type === "search"){
         
         document.getElementById("query").value = event.data.search;
         searchVideo();
         return;
     }
-
+    //Player state
     if(event.source === window && event.data.type ==="youtubeVideoState"){
             youtubePLayerState = event.data.youtubeVideoState;
             if (youtubePLayerState === 2){
@@ -117,13 +113,13 @@ window.addEventListener("message", function (event) {
         
         currentTime = event.data.time;
     }
-
+    //Resizing state
     if(event.source === window && event.data.type === "size" ){
         
         Resizing(event.data.size.width, event.data.size.height);
         return;
     }
-
+    //Dragging state
     if (event.source === window && event.data.type === "location"){
         
         grandParentDiv.style.top = event.data.location.top;
