@@ -1,6 +1,7 @@
 #grandParentDiv {
+    opacity: 0;
     position: fixed!important;
-    z-index: 999 !important;
+    z-index: 999;
     top: 0;
     overflow: hidden;
     background: transparent;
@@ -10,7 +11,7 @@
 
 #parentDiv {
     position: fixed !important;
-    z-index: 999 !important;
+    z-index: 999;
     float: top !important;
     width: auto;
     width: 650px;

@@ -25,6 +25,9 @@ if(event.data ===1){
     }
     youtubePLayerState = 1;
     ispause =true;
+    grandParentDiv.style.zIndex = 999;
+    parentDiv.style.zIndex = 999;
+    grandParentDiv.style.opacity = 1;
 }
 }
 
@@ -70,7 +73,7 @@ window.addEventListener("message", function (event) {
     if (event.source === window && event.data.type ==="hidden"){
         console.log(event.data);
         if(event.data.hidden){
-            player.stopVideo()
+            player.stopVideo();
             grandParentDiv.style.display = "none";
         }
         else{

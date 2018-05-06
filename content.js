@@ -6,6 +6,7 @@ var currentTime = 0;
 var alertOfYouTubeIframeIsAttached = false;
 var width=0;
 var height=0;
+
 window.addEventListener("message", function (event) {
     // console.log(event);
     //This will recieve a message from the youtubeIframeTrigger.js when the youtube IFrame API did and finsihed loading
