@@ -22,7 +22,9 @@ YouTube Extension features and limitations:
 6.	To enable user interaction on the iframe, we need to use eventListeners. Unfortunately, YouTube iframe does not listen to some events (e.g. mouse events). Hence, we had to work around it by nesting the iframe inside some div elements. We then made those divs draggable/resizable and the iframe adjustable to its parent element. 
 7.	We had used JQuery for dragging/resizing functions. However, they did not give good user experience (i.e. the dragging is not as smooth as we wanted). We then wrote the functions in JavaScript. This added to the high number of code lines but the user experience is improved.
 8.	The extension button Circle-icons-computer.svg.png will provide the functionality for user to disable the display of this extension, which can be toggled to show and hide the iframe.
-9.	Testing: 
+9.  Pages such as youtube.com, github and facebook is ignored due to CSP violation and redundancy.  
+
+10.	Testing: 
     We set up Selenium environment for our Extension testing. For more information. https://www.seleniumhq.org/docs/01_introducing_selenium.jsp#test-automation-for-web-applications
     Our unit tests are written in Java 1.8 or Java 8.
      
