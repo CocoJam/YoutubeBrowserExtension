@@ -22,7 +22,7 @@ public class webDriverInit {
         return driver;
     }
 
-
+    //Setting up the driver for auto browsing with developing browser extension.
     public webDriverInit() {
         String currentDir = System.getProperty("user.dir");
         System.out.println(currentDir);
@@ -34,14 +34,14 @@ public class webDriverInit {
         System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
         driver = new ChromeDriver(capabilities);
     }
-
+    //Search through search bar of extension and select given number. Hence playing the searched video.
     public String searchAndView(String s, int n){
         syncSearch(s);
         List<WebElement> resultBox = ListImplicitWait("thumbnailContainer");
         resultBox.get(n).click();
         return getSearchAndViewVideoID(resultBox,n);
     }
-
+    //Getting the videoId through filtering image src
     public String getSearchAndViewVideoID(List<WebElement> webElements, int n){
 
         Pattern pattern = Pattern.compile("vi/(.+)/", Pattern.CASE_INSENSITIVE);
@@ -51,19 +51,22 @@ public class webDriverInit {
         }
        return "";
     }
-
+    //Implicit wait is a selenium function to wait for a set time with 500 mili sec interval check for specific element
+    //If given time is not find the element it will through an error. This waits for an element.
     public WebElement implicitWait(String s){
         WebDriverWait wait = new WebDriverWait(driver, 10);
         WebElement element= wait.until(ExpectedConditions.presenceOfElementLocated(By.id(s)));
         return element;
     }
-
+    //Implicit wait is a selenium function to wait for a set time with 500 mili sec interval check for specific element
+    //If given time is not find the element it will through an error. This waits for a list.
     public List<WebElement> ListImplicitWait(String s){
         WebDriverWait wait = new WebDriverWait(driver, 10);
        List<WebElement> element= wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.id(s)));
         return element;
     }
-
+    //This is searching through query using the search bar, then using Action to hover over the results in order to take
+    //the given video titles.
     public List<String> searchQueryTitle(String s) {
         List<String> title = new ArrayList<>();
         syncSearch(s);
@@ -78,7 +81,7 @@ public class webDriverInit {
         }
         return title;
     }
-
+    //Search and get img srcs
     public List<WebElement> searchQueryImgSrc(String s) {
         List<WebElement> title = new ArrayList<>();
         syncSearch(s);
@@ -88,28 +91,28 @@ public class webDriverInit {
         }
         return title;
     }
-
+    //Normal searching function
     public void syncSearch(String s) {
         driver.get("http://www.google.com/xhtml");
         WebElement youtubeSearchBox = implicitWait("query");
         youtubeSearchBox.sendKeys(s);
         youtubeSearchBox.sendKeys(Keys.ENTER);
     }
-
+    //Dragging the extension by x and y offset
     public void Dragging(int x, int y) {
         driver.get("http://www.google.com/xhtml");
         WebElement youtubeSearchBox =implicitWait("query");
         Actions action = new Actions(driver);
         action.clickAndHold(youtubeSearchBox).moveByOffset(x, y).release().build().perform();
     }
-
+    //Resizing of the extension by x and y offset
     public void Resizing(int x, int y){
         driver.get("http://www.google.com/xhtml");
         WebElement youtubeSearchBox = implicitWait("resizer");
         Actions action = new Actions(driver);
         action.clickAndHold(youtubeSearchBox).moveByOffset(x, y).release().build().perform();
     }
-
+    //Getting current iframe src.
     public String getCurrentVideoId() {
         WebElement currentVideoId = implicitWait("player");
         String VideoId = currentVideoId.getAttribute("src");

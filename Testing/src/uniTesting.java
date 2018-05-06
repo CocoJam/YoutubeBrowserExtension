@@ -13,7 +13,7 @@ public class uniTesting {
         youtubeDriver = new youtubeDriver();
     }
 
-
+    //Testing the titles of the extension titles search and youtube's search
     @Test
     public void matchingTitles() throws InterruptedException {
         List<String> test = webDriverInit.searchQueryTitle(s);
@@ -28,6 +28,7 @@ public class uniTesting {
         Assert.assertTrue(true);
     }
 
+    //Testing the titles of the extension thumbnails by video id search and youtube's search
     @Test
     public void matchingThumbnail () {
         List<String> test = youtubeDriver.filteringThumbnails(webDriverInit.searchQueryImgSrc(s));

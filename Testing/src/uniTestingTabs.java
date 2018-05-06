@@ -1,12 +1,6 @@
 import org.junit.*;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 public class uniTestingTabs {
     tabsSwitch tabsSwitch = null;
@@ -60,7 +54,6 @@ public class uniTestingTabs {
         String T1 =tabsSwitch.webDriverInit.getCurrentIframewidth();
         tabsSwitch.createNewTab(s);
         tabsSwitch.createNewTab(s);
-//        Thread.currentThread().sleep(1000);
         tabsSwitch.switchTabs(1);
         tabsSwitch.driver.get("https://www.google.com/");
         Thread.currentThread().sleep(1000);
