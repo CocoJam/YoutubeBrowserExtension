@@ -147,7 +147,7 @@ function videoStatePosting(){
             return;
         }else {
             //posting messages of the videoid and current time to html after message is received.
-            window.postMessage({type:"init",videoId: result.videoId, time: result.time, size:result.size, location: result.location, search:result.search}, "*");
+            window.postMessage({type:"init",videoId: result.videoId, time: result.time, size:result.size, location: result.location, search:result.search,youtubeVideoState: result.youtubeVideoState }, "*");
         }
     });
 }

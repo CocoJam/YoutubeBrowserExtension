@@ -77,11 +77,10 @@ fetch(customCSSRef).then(function (value) {
     return value.text();
 }).then(function (value) {
     //After parsing the value from resolved promise, then generate style tag, then attach the parsed text (css content) into the style tag then attach the style tag within the header.
-    // var cssScript = document.createElement("style");
-    // cssScript.textContent = value;
-    // console.log(cssScript);
-    window.postMessage({type:"Css",css:value},"*");
-    // document.getElementsByTagName("head")[0].appendChild(cssScript);
+    var cssScript = document.createElement("style");
+    cssScript.textContent = value;
+    console.log(cssScript);
+    document.getElementsByTagName("head")[0].appendChild(cssScript);
 }).catch(function (reason) {
     //Catching any errors or rejected promises in order to debug, which could be caused by parsing error or rejected promises.
     console.log(reason);

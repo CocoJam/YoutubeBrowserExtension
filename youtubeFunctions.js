@@ -67,16 +67,6 @@ window.addEventListener("message", function (event) {
         return;
     }
 
-    if(event.source === window && event.data.type === "Css"){
-        console.log(event.data.css);
-        var cssScript = document.createElement("style");
-        cssScript.textContent = event.data.css;
-        console.log(cssScript);
-        document.getElementsByTagName("head")[0].appendChild(cssScript);
-        return;
-    }
-
-
     if(event.source === window && event.data.type === "search"){
         console.log(event.data);
         document.getElementById("query").value = event.data.search;
@@ -123,12 +113,18 @@ window.addEventListener("message", function (event) {
     //This detect the message source is from windows, which is likely to be it is from the content script.
     //To receive the message event from content script and detect the data.videoId for changing the videoId when init.
     if (event.source === window && event.data.type === "init") {
-
         currentID = event.data.videoId||"";
         currentTime = event.data.time||0;
         console.log(event.data);
-
         player.loadVideoById(currentID, currentTime);
+        if (event.data.youtubeVideoState === 2){
+            console.log("STOP!!!");
+            player.stopVideo();
+            youtubePLayerState =2;
+        }
+        else{
+            youtubePLayerState = 1;
+        }
         // player.setSize(event.data.width, event.data.height);
         if (event.data.location !== undefined){
         grandParentDiv.style.top = event.data.location.top||0;
