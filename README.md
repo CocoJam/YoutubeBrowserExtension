@@ -16,8 +16,7 @@ YouTube Extension features and limitations:
     •	Play the video across all tabs but only the active tab has the sound. However, this is not a preferred solution as it requires high computation and memory.
 
 3.	Search feature: we use YouTube API Search function. Hence, your search will use your Google/YouTube account to require search results (i.e. the results will be the same as your search result on the YouTube page). There are 5 videos returned with the views number and video title (hover your mouse on each video thumbnail to see). Then, click to play the video of your choice. The search results and new video played will be synchronised across tabs.
-4.	The iframe is synchronously draggable, resizable, played and paused across tabs.
-    •	Reminder: check if all your tabs are zoomed at exactly same size (e.g. 100%) so you can see the iframe’s size and position are synchronised across tabs.
+4.	The iframe is synchronously draggable, resizable, played and paused across tabs. Reminder: check if all your tabs are zoomed at exactly same size (e.g. 100%) so you can see the iframe’s size and position are synchronised across tabs.
 5.	Important: If you reload the extension, you must refresh all the tabs to get the updated ext to work.
 6.	To enable user interaction on the iframe, we need to use eventListeners. Unfortunately, YouTube iframe does not listen to some events (e.g. mouse events). Hence, we had to work around it by nesting the iframe inside some div elements. We then made those divs draggable/resizable and the iframe adjustable to its parent element. 
 7.	We had used JQuery for dragging/resizing functions. However, they did not give good user experience (i.e. the dragging is not as smooth as we wanted). We then wrote the functions in JavaScript. This added to the high number of code lines but the user experience is improved.
