@@ -25,9 +25,10 @@ if(event.data ===1){
     }
     youtubePLayerState = 1;
     ispause =true;
+    grandParentDiv.style.opacity = 1;
     grandParentDiv.style.zIndex = 999;
     parentDiv.style.zIndex = 999;
-    grandParentDiv.style.opacity = 1;
+
 }
 }
 
@@ -45,7 +46,6 @@ document.addEventListener("visibilitychange", function (event) {
         document.getElementById("searchResults").style.display = "";
         document.getElementById("resizer").style.display="";
         stopVideo();
-
     }
     if (document.visibilityState === "visible") {
         console.log(youtubePLayerState);
@@ -71,6 +71,7 @@ window.addEventListener("message", function (event) {
     }
 
     if (event.source === window && event.data.type ==="hidden"){
+        grandParentDiv.style.opacity = 1;
         console.log(event.data);
         if(event.data.hidden){
             player.stopVideo();
@@ -78,7 +79,10 @@ window.addEventListener("message", function (event) {
         }
         else{
             grandParentDiv.style.display = "block";
-            player.playVideo();
+            document.getElementById("searchResults").style.display = "none";
+            document.getElementById("searchResults").offsetHeight; // no need to store this anywhere, the reference is enough
+            document.getElementById("searchResults").style.display = "";
+            // player.playVideo();
         }
         return;
     }
@@ -94,7 +98,7 @@ window.addEventListener("message", function (event) {
         console.log(event.data.youtubeVideoState);
             youtubePLayerState = event.data.youtubeVideoState;
             if (youtubePLayerState === 2){
-                ispause =false;
+                // ispause =false;
             }
             return;
     }
@@ -155,6 +159,7 @@ window.addEventListener("message", function (event) {
             document.getElementById("searchResults").style.display = "none";
             document.getElementById("resizer").style.display="none";
         };
+        grandParentDiv.style.opacity = 1;
         // searchBar.style.display = "none";
         // searchBar.style.display = "block";
         return
@@ -477,7 +482,3 @@ query.addEventListener("keyup", function (event) {
 });
 // onYouTubeIframeAPIReady();
 //hide the elements on loaded.
-(function(){
-document.getElementById("searchBar").style.display = "none";
-document.getElementById("searchResults").style.display = "none";
-document.getElementById("resizer").style.display="none";})
