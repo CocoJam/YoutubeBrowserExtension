@@ -5,7 +5,7 @@ Uploading the extension to Chrome. You need to upload the whole folder
 
 Referencing: Upload_Extension_pic.png
 
-More information: https://developer.chrome.com/extensions/getstarted 
+More information: https://developer.chrome.com/extensions/getstarted and README- Preparing Extension
 YouTube Extension features and limitations:
     
    1.	Using YouTube API, the ext creates a YouTube iframe that can be injected to some certain web pages. Due the content security policy (CSP), however, some web pages do not allow our iframe injection such as Facebook, Github etc. The ext notifies you with the error messages in those cases.
