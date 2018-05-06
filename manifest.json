@@ -4,11 +4,14 @@
   "version" : "0.0.1",
   "content_scripts":[
     {
+      "exclude_globs": ["*youtube.com*"],
       "matches":[
         "<all_urls>"],
-      "js": ["content.js"]
+      "js": ["content.js"],
+      "css":["playerCss.css"]
     },
     {
+      "exclude_globs": ["*youtube.com*"],
       "js": [ "IframeInjection.js" ],
       "matches": [ "<all_urls>" ],
       "run_at": "document_end"

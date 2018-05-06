@@ -62,7 +62,6 @@ window.addEventListener("message", function (event) {
         }
         //Detection of event consist of currentTime, such that it contains the current play time of the video.
         if (json.info !==null && json.info.currentTime !== undefined && json.info.currenTime !== null && json.info.currentTime > 1) {
-            console.log(event)
             //This allow the use of chrome local storage that sets a key "time" and value of the event currentTime.
             chromeLocalSet({time: json.info.currentTime});
             if (json.info.videoData !== undefined && json.info.videoData.video_id !== undefined && json.info.videoData.video_id !== null ) {
@@ -90,9 +89,10 @@ browser.runtime.onMessage.addListener(ReceivedMessage);
 
 //Background script to this specific content script with the specific tabID.
 function ReceivedMessage(request, sender, sendResponse) {
-
-    
-    window.postMessage({type:"disableVideo"}, "*");
+    console.log(request);
+     // hidden=String(!Boolean(hidden));
+    chromeLocalSet({hidden:request.hidden});
+    // window.postMessage({type:"disableVideo", hidden: hidden}, "*");
 }
 //This is a listener for the given chrome storage changes, which will fire the given callback function when detect
 //changes. This is important for cross domain communication, since normal cross domain communication is not too feasible
@@ -102,7 +102,8 @@ chrome.storage.onChanged.addListener(function (changes, namespace) {
         var storageChange = changes[key];
         //Detecting the storage changes in terms of the old value/state, while also acessing the new value coming in.
         var json = {};
-        // window.postMessage({videoId: result.videoId, Time: result.time, width:result.width, height: result.height, top: result.top, left: result.left, search:result.search}, "*");
+        console.log(key);
+        console.log(storageChange.newValue);
         if (key === "videoId") {
             json.videoId = storageChange.newValue;
             json.type = "videoId";
@@ -127,6 +128,11 @@ chrome.storage.onChanged.addListener(function (changes, namespace) {
             json.search = storageChange.newValue;
             json.type = "search";
         }
+        if (key === "hidden"){
+            json.hidden = storageChange.newValue;
+            json.type = "hidden";
+            console.log("hidden");
+        }
         window.postMessage(json, "*");
     }
 });
@@ -141,13 +147,13 @@ function localMemoryClear() {
 }
 
 function videoStatePosting(){
-    chrome.storage.local.get(["time", "videoId","size","location","youtubeVideoState","search"], function (result) {
+    chrome.storage.local.get(["time", "videoId","size","location","youtubeVideoState","search","hidden"], function (result) {
         if (chrome.runtime.lastError) {
             localMemoryClear();
             return;
         }else {
             //posting messages of the videoid and current time to html after message is received.
-            window.postMessage({type:"init",videoId: result.videoId, time: result.time, size:result.size, location: result.location, search:result.search,youtubeVideoState: result.youtubeVideoState }, "*");
+            window.postMessage({type:"init",videoId: result.videoId, time: result.time, size:result.size, location: result.location, search:result.search,youtubeVideoState: result.youtubeVideoState,hidden: result.hidden }, "*");
         }
     });
 }

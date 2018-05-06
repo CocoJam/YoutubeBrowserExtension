@@ -1,4 +1,5 @@
 var scurityPolictViolation = true;
+//CSP detection of violations. Such as facebook consist CSP to prevent Iframes.
 document.addEventListener("securitypolicyviolation", function(e) {
     if (scurityPolictViolation){
     window.postMessage({type:"CSPError"},"*");
@@ -64,31 +65,7 @@ script.remove();
 //Logging for debugging purpose.
 console.log("Logging js injections");
 
-//Deal to relative pathing that it requires to get playerCss.css through chrome, while allowing webasscess within the manifest.json. Hence chrome.extension.getURL will get the url of the css script.
-var customCSSRef = chrome.extension.getURL("./playerCss.css");
-//Logging the address of the css script.
-console.log(customCSSRef);
-//Sending a local GET request as fetch to get the content of css Script, based on the css scripts given URL.
-//More info of Fetch API please reference MDN Fetch API documentations and Promises documentation to understand following code.
-console.log(scurityPolictViolation)
-fetch(customCSSRef).then(function (value) {
-    console.log(value);
-    //Parsing the resolved promise into text, which should be content of css script then return to the next chained promise function.
-    return value.text();
-}).then(function (value) {
-    //After parsing the value from resolved promise, then generate style tag, then attach the parsed text (css content) into the style tag then attach the style tag within the header.
-    var cssScript = document.createElement("style");
-    cssScript.textContent = value;
-    console.log(cssScript);
-    document.getElementsByTagName("head")[0].appendChild(cssScript);
-}).catch(function (reason) {
-    //Catching any errors or rejected promises in order to debug, which could be caused by parsing error or rejected promises.
-    console.log(reason);
-});
-// var customCss = document.createElement("link");
-// customCss.setAttribute("href",chrome.extension.getURL("./playerCss.css"));
-// document.getElementsByTagName("head")[0].appendChild(customCss);
-
+//injecting youtube Function scripts.
 var youtubeStandard = document.createElement("script");
 youtubeStandard.src = chrome.extension.getURL("youtubeFunctions.js");
 document.body.appendChild(youtubeStandard);

@@ -67,6 +67,19 @@ window.addEventListener("message", function (event) {
         return;
     }
 
+    if (event.source === window && event.data.type ==="hidden"){
+        console.log(event.data);
+        if(event.data.hidden){
+            player.stopVideo()
+            grandParentDiv.style.display = "none";
+        }
+        else{
+            grandParentDiv.style.display = "block";
+            player.playVideo();
+        }
+        return;
+    }
+
     if(event.source === window && event.data.type === "search"){
         console.log(event.data);
         document.getElementById("query").value = event.data.search;
@@ -91,11 +104,7 @@ window.addEventListener("message", function (event) {
     }
 
     if(event.source === window && event.data.type === "time"){
-        // console.log(event);
         currentTime = event.data.time;
-        console.log(currentTime);
-
-        // player.seekTo(event.data.time,true);
     }
 
     if(event.source === window && event.data.type === "size" ){
@@ -113,12 +122,16 @@ window.addEventListener("message", function (event) {
     //This detect the message source is from windows, which is likely to be it is from the content script.
     //To receive the message event from content script and detect the data.videoId for changing the videoId when init.
     if (event.source === window && event.data.type === "init") {
+        if (event.data.hidden){
+        grandParentDiv.style.display = "none";}
+        else {
+            grandParentDiv.style.display = "block";
+        }
         currentID = event.data.videoId||"";
         currentTime = event.data.time||0;
         console.log(event.data);
         player.loadVideoById(currentID, currentTime);
         if (event.data.youtubeVideoState === 2){
-            console.log("STOP!!!");
             player.stopVideo();
             youtubePLayerState =2;
         }
