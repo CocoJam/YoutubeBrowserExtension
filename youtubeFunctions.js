@@ -22,13 +22,11 @@ if(event.data ===1){
         console.log(event.data);
         player.seekTo(currentTime, true);
         window.postMessage({type : "youtubeVideoState",youtubeVideoState: 1},"*");
+        ispause =true;
+        grandParentDiv.style.opacity = 1;
+        grandParentDiv.style.zIndex = 999;
+        parentDiv.style.zIndex = 999;
     }
-    youtubePLayerState = 1;
-    ispause =true;
-    grandParentDiv.style.opacity = 1;
-    grandParentDiv.style.zIndex = 999;
-    parentDiv.style.zIndex = 999;
-
 }
 }
 
@@ -111,6 +109,7 @@ window.addEventListener("message", function (event) {
     }
 
     if(event.source === window && event.data.type === "time"){
+        console.log(event.data.time);
         currentTime = event.data.time;
     }
 
