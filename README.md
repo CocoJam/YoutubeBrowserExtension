@@ -1,4 +1,5 @@
 Contributor:CocoJam as razormixer and vanienguyen
+
 You need to read the below website if you do not have Browser Extension background:
 https://developer.mozilla.org/en-US/Add-ons/WebExtensions
 
